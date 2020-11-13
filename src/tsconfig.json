@@ -3,7 +3,7 @@
         "target": "esnext",
         "watch": true,
         "lib": ["dom", "es2017"],
-        "outDir": "out",
+        "outDir": "../out",
         "allowJs": true
     }
 }
