@@ -1,9 +1,11 @@
 import { Block } from './block.js';
-import { Text } from './text.js';
 import { render } from './renderer.js'
 
 let newBlock:Block = new Block(() => {
-    return new Text("hello there what is up homie", "a");
+    console.log("ye2")
+    let text = Block.Text("hello there what is up homie")
+    return text;
 });
 
 render(newBlock);
+console.log("hi " + newBlock.get());
