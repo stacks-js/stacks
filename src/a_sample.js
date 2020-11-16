@@ -1,3 +1,14 @@
+/**
+ * This file is used as my document to plan out what I would like an "ideal" usable release
+ * of Stacks to be.
+ * 
+ * Core features:
+ *  - Custom Blocks - DONE
+ *  - Stacks
+ *  - Image - DONE
+ *  - Text - DONE
+ *  - Modifiers(scale, opacity, etc)
+ */
 class Subview extends Block {
     body = () => {
         return Stack.with("x", 

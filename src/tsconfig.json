@@ -4,6 +4,6 @@
         "watch": true,
         "lib": ["dom", "es2017"],
         "outDir": "../out",
-        "allowJs": true
+        "allowJs": false
     }
 }
