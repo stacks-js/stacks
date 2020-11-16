@@ -7,4 +7,4 @@ class View extends Block {
     }
 }
 
-render(View);
+render(new View());

@@ -6,50 +6,50 @@
 //     }
 // }
 
-import { Text } from "./text.js"
+// import { Text } from "./text.js"
 
-export class Block {
-    body: Block;
-    bodyfunc: Function;
-    html: string = "";
-    type: string = "div";
-    properties: { href?: string }  = {};
+// export class Block {
+//     body: Block;
+//     bodyfunc: Function;
+//     html: string = "";
+//     type: string = "div";
+//     properties: { href?: string }  = {};
     
-    constructor(body?: Function, type?:string) {
-        if(body) {
-            this.bodyfunc = body;
-            this.body = this.bodyfunc();
-        }else{
-            this.body = null;
-        }
+//     constructor(body?: Function, type?:string) {
+//         if(body) {
+//             this.bodyfunc = body;
+//             this.body = this.bodyfunc();
+//         }else{
+//             this.body = null;
+//         }
 
-        if(type){
-            this.type = type;
-        }
-    }
+//         if(type){
+//             this.type = type;
+//         }
+//     }
 
-    link(href: string) {
-        this.type = "a";
-        let newblock = new Block(this.bodyfunc, "a");
-        console.log(newblock.get())
-        return newblock;
-    }
+//     link(href: string) {
+//         this.type = "a";
+//         let newblock = new Block(this.bodyfunc, "a");
+//         console.log(newblock.get())
+//         return newblock;
+//     }
 
-    get(){
-        console.log("get" + this.type)
-        let head:string = "<" + this.type + ">";
-        let tail:string = "</" + this.type + ">";
-        if(this.body != null) {
-            this.html = head + this.body.html + tail;
-            return this.html;
-        }
-        return head + tail;
-    }
+//     get(){
+//         console.log("get" + this.type)
+//         let head:string = "<" + this.type + ">";
+//         let tail:string = "</" + this.type + ">";
+//         if(this.body != null) {
+//             this.html = head + this.body.html + tail;
+//             return this.html;
+//         }
+//         return head + tail;
+//     }
 
-    static Text(text : string, style?:string) {
-        return new Text(text, style);
-    }
-}
+//     static Text(text : string, style?:string) {
+//         return new Text(text, style);
+//     }
+// }
 
 // export class Element {
 //     html:string;
@@ -78,3 +78,32 @@ export class Block {
 //         return this.html;
 //     }
 // }
+
+export class Block {
+    body: Function = null;
+    html: string;
+}
+
+export class Text extends Block {
+    text:string;
+    style:string = "p";
+
+    constructor(text:string, style?:string){
+        super();
+        this.text = text;
+        if(style)
+            this.style = style
+        
+        this.html = "<" + this.style + ">" + this.text + "</" + this.style + ">";
+    }
+}
+
+export class Image extends Block {
+    path:string;
+
+    constructor(path:string){
+        super();
+        this.path = path;
+        this.html = "<img src='" + path + "'>";
+    }
+}

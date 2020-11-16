@@ -1,7 +1,6 @@
 import {Block} from "./block.js";
 
-export function render(block){
-    let body = block.b;
-    body.get();
-    document.querySelector("body").innerHTML += body.get();
+export function render(block : Block){
+    let body = block.body();
+    document.querySelector("body").innerHTML += body.html;
 }
