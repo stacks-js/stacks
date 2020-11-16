@@ -1,5 +1,5 @@
 class Subview extends Block {
-    const body = () => {
+    body = () => {
         return Stack.with("x", 
             new Text("hello there"),
             Stack.with("z", 
@@ -13,7 +13,7 @@ class Subview extends Block {
 }
 
 class MainView extends Block {
-    const body = () => {
+    body = () => {
         return Stack.with("y", 
             new Text("User Profile"),
             new Subview(),
