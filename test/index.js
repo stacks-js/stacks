@@ -5,7 +5,9 @@ import { render } from "../out/renderer.js"
 
 class View extends Block {
     body = () => {
-        return new Image("https://www.w3schools.com/images/colorpicker.gif");
+        return new Text("https://www.w3schools.com/images/colorpicker.gif")
+            .link("https://www.youtube.com")
+            
     }
 }
 
