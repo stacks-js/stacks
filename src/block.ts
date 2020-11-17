@@ -1,40 +1,56 @@
 export class Block {
     body: Function = null;
-    object: Node;
+    object: HTMLElement;
     isLink: boolean = false;
 
     params = {
         tag: "div",
         isLink: false,
         text: false,
-        style: {}
+        style: {},
+        childStyle: {}
     };
 
-    link(href:string){
+    link(href:string) {
         this.isLink = true;
         this.params["href"] = href;
         this.params["tag"] = "a";
         return this;
     }
 
-    setStyleAttribute(name:string,value:string){
+    border(width:number, color?:string, style?:string){
+        return this.setChildStyle("border", (width).toString() + "px " + (style ? style  + " ": "solid ") + (color ? color: "black"));
+    }
+
+    setStyleAttribute(name:string,value:string) {
         this.params.style[name] = value;
         return this;
     }
 
+    setChildStyle(name:string,value:string) {
+        this.params.childStyle[name] = value;
+        return this;
+    }
+
     get() {
-        let element = document.createElement(this.params["tag"]);
-        element.id = this.constructor.name;
-        element.appendChild(this.object)
+        let main = document.createElement(this.params["tag"]);
+        main.id = this.constructor.name;
+
+        let child = this.object;
+        for(let style in this.params.childStyle) {
+            child.style[style] = this.params.childStyle[style];
+        }
+        
+        main.appendChild(this.object)
 
         if(this.isLink) {
-            element.setAttribute("href", this.params["href"]);
+            main.setAttribute("href", this.params["href"]);
         }
 
         for(let style in this.params.style) {
-            element.style[style] = this.params.style[style];
+            main.style[style] = this.params.style[style];
         }
 
-        return element;
+        return main;
     }
 }
