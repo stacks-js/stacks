@@ -41,7 +41,7 @@ export class Block {
         return this;
     }
 
-    get() {
+    get():HTMLElement{
         let main = document.createElement(this.params["tag"]);
         main.id = this.constructor.name;
 
@@ -60,6 +60,16 @@ export class Block {
             main.style[style] = this.params.style[style];
         }
 
-        return main;
+        let centered:HTMLElement = document.createElement("div");
+        centered.style.display = "flex";
+        centered.style.justifyContent = "center";
+        centered.style.alignItems = "center";
+        centered.style.height = window.innerHeight + "px";
+
+        centered.appendChild(main);
+
+        centered.id = "stacks_js_view";
+
+        return centered;
     }
 }
