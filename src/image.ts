@@ -6,6 +6,10 @@ export class Image extends Block {
     constructor(path:string){
         super();
         this.path = path;
-        this.html = "<img src='" + path + "'>";
+
+        let imageObject = document.createElement("img")
+        imageObject.setAttribute("src", path);
+        
+        this.object = imageObject;
     }
 }

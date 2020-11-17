@@ -2,6 +2,5 @@ import {Block} from "./block.js";
 
 export function render(block : Block){
     let body = block.body();
-    document.querySelector("body").appendChild(body.get())
-    console.log(body.get())
+    document.body.appendChild(body.get())
 }

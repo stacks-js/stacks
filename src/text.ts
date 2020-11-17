@@ -7,9 +7,12 @@ export class Text extends Block {
     constructor(text:string, style?:string){
         super();
         this.text = text;
+        this.params["text"] = true;
         if(style)
             this.style = style
         
-        this.html = "<" + this.style + ">" + this.text + "</" + this.style + ">";
+        let textElement = document.createElement(style ? style : "p");
+        textElement.innerText = text;
+        this.object = textElement;
     }
 }

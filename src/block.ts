@@ -1,11 +1,13 @@
 export class Block {
     body: Function = null;
-    html: string;
+    object: Node;
     isLink: boolean = false;
 
     params = {
         tag: "div",
-        isLink: false
+        isLink: false,
+        text: false,
+        style: {}
     };
 
     link(href:string){
@@ -15,17 +17,22 @@ export class Block {
         return this;
     }
 
-    get() {
-        // let mainTag = this.isLink ? "a" : "div";
-        // let front = "<" + mainTag + (this.isLink ? " href='" + this.params["href"] + "'>" : ">");
-        // let back = "</" + mainTag + ">";
+    setStyleAttribute(name:string,value:string){
+        this.params.style[name] = value;
+        return this;
+    }
 
-        let element = document.createElement(this.params["tag"])
+    get() {
+        let element = document.createElement(this.params["tag"]);
         element.id = this.constructor.name;
-        element.innerHTML = this.html;
+        element.appendChild(this.object)
 
         if(this.isLink) {
             element.setAttribute("href", this.params["href"]);
+        }
+
+        for(let style in this.params.style) {
+            element.style[style] = this.params.style[style];
         }
 
         return element;
