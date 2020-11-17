@@ -7,6 +7,7 @@ export class Block {
         tag: "div",
         isLink: false,
         text: false,
+        stack: false,
         style: {},
         childStyle: {}
     };
