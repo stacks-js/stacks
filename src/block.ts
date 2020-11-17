@@ -18,8 +18,12 @@ export class Block {
         return this;
     }
 
-    border(width:number, color?:string, style?:string){
-        return this.setChildStyle("border", (width).toString() + "px " + (style ? style  + " ": "solid ") + (color ? color: "black"));
+    border(width:number, color?:string, radius?:number, style?:string){
+        this.setChildStyle("border", width.toString() + "px " + (style ? style  + " ": "solid ") + (color ? color: "black"))
+        if(radius) {
+            this.setChildStyle("border-radius", radius.toString() + "px")
+        }
+        return this;
     }
 
     setStyleAttribute(name:string,value:string) {
