@@ -19,10 +19,15 @@ export class Block {
     }
 
     border(width:number, color?:string, radius?:number, style?:string){
-        this.setChildStyle("border", width.toString() + "px " + (style ? style  + " ": "solid ") + (color ? color: "black"))
+        this.setChildStyle("border", width.toString() + "px " + (style ? style  + " ": "solid ") + (color ? color: "black"));
         if(radius) {
-            this.setChildStyle("border-radius", radius.toString() + "px")
+            this.setChildStyle("border-radius", radius.toString() + "px");
         }
+        return this;
+    }
+
+    padding(size:number){
+        this.setChildStyle("padding", size.toString() + "px");
         return this;
     }
 

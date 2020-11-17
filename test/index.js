@@ -7,6 +7,7 @@ class View extends Block {
     body = () => {
         return new Image("https://www.w3schools.com/images/colorpicker.gif")
             .link("https://www.youtube.com")
+            .padding(40)
             .border(5, "green", 10)
         }
 }
