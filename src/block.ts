@@ -83,27 +83,3 @@ export class Block {
     body: Function = null;
     html: string;
 }
-
-export class Text extends Block {
-    text:string;
-    style:string = "p";
-
-    constructor(text:string, style?:string){
-        super();
-        this.text = text;
-        if(style)
-            this.style = style
-        
-        this.html = "<" + this.style + ">" + this.text + "</" + this.style + ">";
-    }
-}
-
-export class Image extends Block {
-    path:string;
-
-    constructor(path:string){
-        super();
-        this.path = path;
-        this.html = "<img src='" + path + "'>";
-    }
-}
