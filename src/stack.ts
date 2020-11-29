@@ -10,7 +10,6 @@ export class Stack extends Block{
         this.params["stack"] = false;
 
         let stackObject = document.createElement("div");
-        stackObject.className = "ystack";
 
         for(let block in blocks) {
             let body:HTMLElement = blocks[block].get();
