@@ -1,7 +1,7 @@
 import {Block} from "./block.js";
 
 export function render(block : Block){
-    let body:HTMLElement = block.body().get();
+    let body:HTMLElement = block.body().get(true);
 
     document.body.appendChild(body);
     

@@ -42,16 +42,16 @@ export class Block {
         return this;
     }
 
-    get():HTMLElement{
+    get(view?:Boolean):HTMLElement{
         let main = document.createElement(this.params["tag"]);
         main.id = this.constructor.name;
 
-        let child = this.object;
+        let child = (this.body ? this.body().get() : this.object);
         for(let style in this.params.childStyle) {
             child.style[style] = this.params.childStyle[style];
         }
         
-        main.appendChild(this.object)
+        main.appendChild(child)
 
         if(this.isLink) {
             main.setAttribute("href", this.params["href"]);
@@ -61,15 +61,18 @@ export class Block {
             main.style[style] = this.params.style[style];
         }
 
-        let centered:HTMLElement = document.createElement("div");
+        let centered:HTMLElement;
+        centered = document.createElement("div");
         centered.style.display = "flex";
         centered.style.justifyContent = "center";
         centered.style.alignItems = "center";
-        centered.style.height = window.innerHeight + "px";
+
+        if(view) {
+            centered.style.height = window.innerHeight + "px";
+            centered.id = "stacks_js_view";
+        }
 
         centered.appendChild(main);
-
-        centered.id = "stacks_js_view";
 
         return centered;
     }

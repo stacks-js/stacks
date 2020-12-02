@@ -4,7 +4,7 @@
  * 
  * Core features:
  *  - Custom Blocks - DONE
- *  - Stacks
+ *  - Stacks - DONE
  *  - Image - DONE
  *  - Text - DONE
  *  - Modifiers(scale, opacity, etc)

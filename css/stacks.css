@@ -1,134 +1,20 @@
-/* 
-	THIS FILE WAS CREATED BY @ItsJonQ on GitHub, used by Sanjith Udupa in Stacks.js. 
-	All CSS Credit to them, link: https://github.com/ItsJonQ/hstack-vstack-css
-
-	MODIFIED BY SANJITH UDUPA, 11/17/2020
-*/
-
-/* DESIGN TOKENS */
-:root {
-	--grid: 4px;
-}
-
-/* COMPONENTS */
-/* The primary layout component that powers XStack and YStack */
-.flex {
-	--spacing: 4px;
-	--direction: row;
-	--align: center;
-	display: flex;
-	justify-content: space-between;
-	align-items: var(--align);
-	flex-direction: var(--direction);
-}
-
-/* Adjust the spacing of all (immediate) inner children */
-.flex > * + * {
-	margin-left: var(--spacing);
-}
-
-/* Horizontally stack items in line. */
-.xstack {
-	--direction: row;
-}
-
-/* Vertically stack items on top of each other. */
 .ystack {
-	--align: stretch;
-	--direction: column;
-}
-/* Adjust spacing for vertically stacking items */
-.ystack > * + * {
-	margin-left: unset;
-	margin-top: var(--spacing);
+    display: flex;
+    flex-direction: column;
 }
 
-/* Adaptive take up space within a stack, used for content or for pushing items. */
-.spacer {
-	flex: 1;
+.xstack {
+    display: flex;
+    flex-direction: row;
 }
 
-/* MODIFIERS */
-/* Adjusts spacing between items */
-.--sp1 {
-	--spacing: calc(var(--grid) * 1);
+.zstack {
+	display: grid;
 }
-.--sp2 {
-	--spacing: calc(var(--grid) * 2);
-}
-.--sp3 {
-	--spacing: calc(var(--grid) * 3);
-}
-.--sp4 {
-	--spacing: calc(var(--grid) * 4);
-}
-.--sp5 {
-	--spacing: calc(var(--grid) * 5);
-}
-.--sp6 {
-	--spacing: calc(var(--grid) * 6);
+.zstack > * {
+	grid-area: 1/1/1/1;
 }
 
-/* Adjusts alignment of items within a stack. */
-.--top {
-	--align: flex-start;
-}
-.--left {
-	justify-content: flex-start;
-}
-.--center {
-	justify-content: center;
-}
-.--right {
-	justify-content: flex-end;
-}
-.--edge {
-	justify-content: space-between;
-}
-
-/* Vertically center items in a YStack */
-.--y-center {
-	--align: center;
-}
-
-/* RESPONSIVE */
-/* Responsive styles to swap between XStack and YStack for tablet/desktop */
-@media (min-width: 40em) {
-	.ystack\@md {
-		--align: stretch;
-		--direction: column;
-	}
-	.ystack\@md > * + * {
-		margin-left: unset;
-		margin-top: var(--spacing);
-	}
-}
-@media (min-width: 60em) {
-	.ystack\@lg {
-		--align: stretch;
-		--direction: column;
-	}
-	.ystack\@lg > * + * {
-		margin-left: unset;
-		margin-top: var(--spacing);
-	}
-}
-
-@media (min-width: 40em) {
-	.xstack\@md {
-		--direction: row;
-	}
-	.xstack\@md > * + * {
-		margin-top: unset;
-		margin-left: var(--spacing);
-	}
-}
-@media (min-width: 60em) {
-	.xstack\@lg {
-		--direction: row;
-	}
-	.xstack\@lg > * + * {
-		margin-top: unset;
-		margin-left: var(--spacing);
-	}
+.child {
+    margin: var(--margin);
 }
