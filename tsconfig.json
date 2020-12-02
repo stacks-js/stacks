@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "watch": true,
+        "lib": ["dom", "es2017"],
+        "rootDir": "src",
+        "outDir": "dist",
+        "allowJs": false,
+        "strict": true,
+        "esModuleInterop": true
+    }
+}
