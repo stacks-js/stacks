@@ -1,2 +1,1 @@
-out/*.js
-testout/*.js
+dist/*.js
