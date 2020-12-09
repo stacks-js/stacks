@@ -1,7 +1,12 @@
+import onChange from "./lib/onchange.js"
+import { StacksRenderer } from "./renderer.js"
+
 export class Block {
     body: Function = null;
     object: HTMLElement;
     isLink: boolean = false;
+
+    id:string;
 
     params = {
         tag: "div",
@@ -9,8 +14,23 @@ export class Block {
         text: false,
         stack: false,
         style: {},
-        childStyle: {}
+        childStyle: {},
+        events: {},
+        id: "",
+        stateful: false,
+        wasView: false
     };
+
+    updates = 0;
+
+    states:ProxyConstructor = onChange({}, (t:Object, p:string) => {
+        console.log(t[p] + ", " + p);
+        if(this.updates > 0)
+            StacksRenderer.getInstance().update(this/*this.get(this.params.wasView), this.constructor.name*/);
+        this.updates++;
+    })
+
+    centered:HTMLElement = document.createElement("div");
 
     link(href:string) {
         this.isLink = true;
@@ -42,38 +62,95 @@ export class Block {
         return this;
     }
 
-    get(view?:Boolean):HTMLElement{
-        let main = document.createElement(this.params["tag"]);
-        main.id = this.constructor.name;
+    onclick(click:Function) {
+        this.params.events["click"] = click;
+        return this;
+    }
 
-        let child = (this.body ? this.body().get() : this.object);
+    stateful(value?:boolean) {
+        this.params.stateful = value ? value : true;
+        this.centered.id = this.constructor.name; 
+        StacksRenderer.getInstance().ids.push(this.constructor.name);
+        StacksRenderer.getInstance().stateful.push(this);
+        return this;
+    }
+
+    init() {
+        console.log("init block")
+    }
+
+    getChild():HTMLElement {
+        let child:HTMLElement = (this.body ? this.body().get() : this.object);
         for(let style in this.params.childStyle) {
             child.style[style] = this.params.childStyle[style];
         }
-        
-        main.appendChild(child)
+        return child;
+    }
 
-        if(this.isLink) {
-            main.setAttribute("href", this.params["href"]);
+    get(view?:boolean):HTMLElement{
+        // this.init();
+        this.params.wasView = view ? view : false;
+
+        console.log("STATES")
+        console.log(this.states)
+
+        let main:HTMLElement;
+        if(this.params["tag"] != "div")
+            main = document.createElement(this.params["tag"]);
+
+        let child:HTMLElement = (this.body ? this.body().get() : this.object);
+        for(let style in this.params.childStyle) {
+            child.style[style] = this.params.childStyle[style];
         }
+
+        // console.log(child);
+
+        if(this.params["tag"] != "div")
+            main.appendChild(child)
+        else
+            main = child;
+
+        if(this.isLink)
+            main.setAttribute("href", this.params["href"]);
 
         for(let style in this.params.style) {
             main.style[style] = this.params.style[style];
         }
 
-        let centered:HTMLElement;
-        centered = document.createElement("div");
-        centered.style.display = "flex";
-        centered.style.justifyContent = "center";
-        centered.style.alignItems = "center";
-
-        if(view) {
-            centered.style.height = window.innerHeight + "px";
-            centered.id = "stacks_js_view";
+        for(let event in this.params.events) {
+            main.addEventListener(event, this.params.events[event]);
         }
 
-        centered.appendChild(main);
+        // let centered:HTMLElement;
+        // centered = document.createElement("div");
+        this.centered.style.display = "flex";
+        this.centered.style.justifyContent = "center";
+        this.centered.style.alignItems = "center";
 
-        return centered;
+        if(view) {
+            this.centered.style.height = window.innerHeight + "px";
+        }
+
+        let id = StacksRenderer.getInstance().generateId(this.constructor.name);
+        this.id = id; 
+
+        this.centered.appendChild(main);
+
+        console.log("THIS STATFUCL" + this.params.stateful + " " + this.params.id)
+
+        // if(this.params.stateful){
+        this.centered.id = this.constructor.name; 
+        //     StacksRenderer.getInstance().ids.push(this.constructor.name);
+        //     StacksRenderer.getInstance().stateful.push(this);
+        // }
+
+        // if(this.params.stateful) {
+        //     centered.id = id;
+        //     StacksRenderer.getInstance().watching[id] = centered;
+        // }
+
+        this.centered.setAttribute("stateful", this.params.stateful + "")
+
+        return this.centered;
     }
 }
