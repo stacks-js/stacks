@@ -16,7 +16,7 @@ export class StacksRenderer {
 
 
     render(block : Block): void{
-        let body:HTMLElement = block.body().get(true);
+        let body:HTMLElement = block.get(true);
     
         document.body.appendChild(body);
 
@@ -28,13 +28,32 @@ export class StacksRenderer {
     }
 
     update(block : Block) {
+        console.trace("<h2>UPDATE</h2>")
         // let count:number = 0;
         // console.log("YEYYY")
         // console.log(StacksRenderer.getInstance().stateful)
         // StacksRenderer.getInstance().stateful.forEach(block => {
-        const old:HTMLElement = block.body().get(block.params.wasView);
-        document.body.removeChild(document.getElementById(old.id));
-        this.render(block);
+        const id:string = block.body().get().id;
+        const parent = document.getElementById(id).parentElement;
+        const old =  document.getElementById(id);
+        const children = parent.childNodes;
+        
+        children.forEach(child => {
+            if(child === old){
+                console.log(parent.childNodes[0])
+                console.log(block.body().get())
+                parent.childNodes[0].replaceWith(block.body().get());
+            }
+        });
+
+        // parent.replaceChild(old, document.createElement("p"));
+
+        // try {
+        //     document.body.removeChild(document.getElementById(old));
+        // } catch (e) {
+        //     console.log({e: "ERRPR", id: old})        
+        // }
+        // this.render(block);
 
         // });
         // StacksRenderer.getInstance().stateful.forEach(block => {

@@ -150,7 +150,7 @@ export class Block {
         // }
 
         this.centered.setAttribute("stateful", this.params.stateful + "")
-
+        this.object = this.centered;
         return this.centered;
     }
 }
