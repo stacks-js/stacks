@@ -34,8 +34,8 @@ export class StacksRenderer {
         // console.log(StacksRenderer.getInstance().stateful)
         // StacksRenderer.getInstance().stateful.forEach(block => {
         const id:string = block.body().get().id;
-        const parent = document.getElementById(id).parentElement;
         const old =  document.getElementById(id);
+        const parent = old ? old.parentElement : document.body;
         const children = parent.childNodes;
         
         children.forEach(child => {
