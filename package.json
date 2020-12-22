@@ -1,0 +1,23 @@
+{
+  "name": "stacks-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/stacks.js",
+  "directories": {
+    "main": "dist"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanjithudupa/stacks-js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sanjithudupa/stacks-js/issues"
+  },
+  "homepage": "https://github.com/sanjithudupa/stacks-js#readme"
+}
