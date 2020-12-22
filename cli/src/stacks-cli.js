@@ -28,7 +28,7 @@ if (!process.argv[2] || process.argv[2] == "--lang"){
     clear();
     console.log(chalk.greenBright("Please include an app name before language declaration!\n"))
     program.outputHelp();
-    return;
+    exit();
 }
 
 const lang = program.lang ? !(program.lang.toLowerCase() == "typescript" || program.lang.toLowerCase() == "ts"): true;
@@ -40,10 +40,26 @@ console.log(chalk.yellowBright(`This could take a few seconds...`));
 const createProject = () => {
     const projectPath = path.join(process.cwd(), appName);
 
+    // fs.access(projectPath, async (error) => {
+    //     if(!error) {
+    //         readline.question(`${chalk.redBright("Project already exists!")} Overwrite it? (y/n) `, async (overAnswer) => {
+    //             readline.close();
+    //             const over = overAnswer ? overAnswer.toLowerCase() == "y" : false;
+                
+    //             if(!over) {
+    //                 console.log(chalk.blue("Aborted"))
+    //                 exit();
+    //             }
+    //         });
+    //     }
+    // });
+
     // create project directory
     fs.mkdir(projectPath, (error) => {
-        if(error)
-            return console.log(chalk.redBright("Project creation failed! Make sure the folder doesn't already exist!"));
+        if(error){
+            console.log(chalk.redBright("Project creation failed! Make sure the folder doesn't already exist!"));
+            exit();
+        }
         
         // go to the new folder
         process.chdir(projectPath);
@@ -81,8 +97,10 @@ const createProject = () => {
                 await exec(`${yarn ? "yarn add" : "npm install "} ${package} ${dev ? (yarn ? "-D" : "--save-dev") : ""}`);
             });
 
-            console.log(chalk.blue("Added packages!"));
-            load.stop();
+            setTimeout(() => {
+                console.log(chalk.blue("\nAdded packages!"));
+                load.stop();
+            }, 250);
             
             // load.setSpinnerTitle(chalk.yellow(addingPackagesText) + chalk.blueBright(" (parcel-bundler)"));
             
