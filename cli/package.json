@@ -10,12 +10,14 @@
     "start": "nodemon --watch 'src/**/*.js' --exec 'node' src/index.js",
     "local": "sudo npm i -g && stacks-js",
     "refresh": "rm -rf ./node_modules ./yarn.lock && yarn install",
-    "test": "rmdir appName && node src/stacks-cli.js appName"
+    "run": "node src/stacks-cli.js appName",
+    "test": "rm -R appName && node src/stacks-cli.js appName"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "await-exec": "^0.1.2",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
     "cli-spinner": "^0.2.10",

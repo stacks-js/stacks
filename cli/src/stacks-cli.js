@@ -7,12 +7,15 @@ const path = require("path");
 const program = require("commander");
 const { exit } = require("process");
 const fs = require("fs");
-const { exec } = require("child_process");
+const exec = require('await-exec');
 const Spinner = require('cli-spinner').Spinner;
 const readline = require('readline').createInterface({
     input: process.stdin,
     output: process.stdout
 });
+
+const addingPackagesText = "Adding necessary packages...";
+const packages = {/*"stacks-js": false, */"parcel-bundler": true};
 
 program
     .version("0.0.1")
@@ -51,7 +54,7 @@ const createProject = () => {
         console.log("\n");
 
         // ask for yarn
-        readline.question(`Use ${chalk.green("Yarn")} as package manager? (y/n)`, yarnAnswer => {
+        readline.question(`Use ${chalk.green("Yarn")} as package manager? (y/n) `, async (yarnAnswer) => {
             const yarn = yarnAnswer ? yarnAnswer.toLowerCase() == "y" : false;
             readline.close();
 
@@ -62,11 +65,27 @@ const createProject = () => {
 
             // setup for yarn
             if(yarn)
-                exec("yarn")
+                await exec("yarn")
+            else
+                setTimeout(()=>{}, 100);
 
             // add stacks.js package to project
-            exec(`${yarn ? "yarn link " : "npm link "} stacks-js`);
+            load.setSpinnerTitle(chalk.yellow(addingPackagesText) + chalk.red(" (stacks-js)"));
+            await exec(`${yarn ? "npm link " : "npm link "} stacks-js`);
 
+            // add packages to project
+            Object.keys(packages).forEach(async (package) => {
+                const dev = packages[package];
+
+                load.setSpinnerTitle(chalk.yellow(addingPackagesText) + chalk.red(` (${package})`));
+                await exec(`${yarn ? "yarn add" : "npm install "} ${package} ${dev ? (yarn ? "-D" : "--save-dev") : ""}`);
+            });
+
+            console.log(chalk.blue("Added packages!"));
+            load.stop();
+            
+            // load.setSpinnerTitle(chalk.yellow(addingPackagesText) + chalk.blueBright(" (parcel-bundler)"));
+            
             // load.text = " Adding necessary packages..."
             // load.stop();
         });
