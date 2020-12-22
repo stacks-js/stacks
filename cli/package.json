@@ -2,14 +2,12 @@
   "name": "stacks-cli",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./src/index.js",
   "bin": {
-    "stacks-js": "./dist/index.js"
+    "stacks-js": "./src/index.js"
   },
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "create": "npm run build",
-    "build": "tsc -p .",
+    "start": "nodemon --watch 'src/**/*.js' --exec 'node' src/index.js",
     "local": "sudo npm i -g && stacks-js",
     "refresh": "rm -rf ./node_modules ./yarn.lock && yarn install"
   },
