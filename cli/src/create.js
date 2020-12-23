@@ -8,29 +8,28 @@ const fs = require("fs");
 
 const addingPackagesText = "Adding necessary packages...";
 const downloadingComponentsText = "Downloading separate components...";
-const packages = {/*"stacks-js": false, */"parcel-bundler": true};
+const packages = {/*"stacks-js": false, "parcel-bundler": true*/};
 const components = {"boostrap-css" : "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"}
 
 const { download, sleep } = require("./utils");
 
-const createProject = (__dirname, process, appName) => {
+const createProject = (dname, proc, appName) => {
 
 
-    const lang = program.lang ? !(program.lang.toLowerCase() == "typescript" || program.lang.toLowerCase() == "ts"): true;
-    const appName = process.argv[2];
+    // const lang = program.lang ? !(program.lang.toLowerCase() == "typescript" || program.lang.toLowerCase() == "ts"): true;
 
-    console.log(`Creating app ${chalk.green(appName)} with language ${chalk.red(lang ? "Javascript" : "Typescript")}`)
+    // console.log(`Creating project ${chalk.green(appName)} with language ${chalk.red(lang ? "Javascript" : "Typescript")}`)
     console.log(chalk.yellowBright(`This could take a few seconds...`));
 
 
-    const libFolder = path.join(__dirname, "../lib/");
+    const libFolder = path.join(dname, "../lib/");
 
     const readline = require('readline').createInterface({
-        input: process.stdin,
-        output: process.stdout
+        input: proc.stdin,
+        output: proc.stdout
     });
 
-    const projectPath = path.join(process.cwd(), appName);
+    const projectPath = path.join(proc.cwd(), appName);
 
     // fs.access(projectPath, async (error) => {
     //     if(!error) {
@@ -54,7 +53,7 @@ const createProject = (__dirname, process, appName) => {
         }
         
         // go to the new folder
-        process.chdir(projectPath);
+        proc.chdir(projectPath);
         
         // Create node project
         exec("npm init -y")
@@ -140,7 +139,7 @@ const createProject = (__dirname, process, appName) => {
                             exit();
                         }
                         
-                        process.chdir("src");
+                        proc.chdir("src");
 
                         fs.readdir(libFolder, (err, files) => {
                             if(err) {
@@ -149,7 +148,7 @@ const createProject = (__dirname, process, appName) => {
                             }
 
                             files.forEach(file => {
-                                ncp(path.join(libFolder, file), path.join(process.cwd(), file), (err) => {
+                                ncp(path.join(libFolder, file), path.join(proc.cwd(), file), (err) => {
                                     if(err) {
                                         console.log(chalk.redBright("Failed to create file!"));
                                         exit();
@@ -161,7 +160,7 @@ const createProject = (__dirname, process, appName) => {
 
                             console.log(chalk.yellow("Creating run scripts..."));
                             
-                            process.chdir("../")
+                            proc.chdir("../")
                             let package_raw = fs.readFileSync('package.json');
                             let package_json = JSON.parse(package_raw);
                         });
@@ -171,3 +170,5 @@ const createProject = (__dirname, process, appName) => {
         });
     })
 }
+
+module.exports = { createProject };

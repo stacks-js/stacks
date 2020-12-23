@@ -21,8 +21,10 @@ const sleep = (ms) => {
     });
 }
 
-const error = (error) => {
+const error = (error, hint) => {
     console.log(chalk.redBright(error));
+    if(hint)
+        console.log(`Hint: ${chalk.italic(hint)}`);
     exit();
 }
 

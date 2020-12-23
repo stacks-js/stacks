@@ -98,18 +98,11 @@ const createPage = (files, src, out) => {
         let count = 0;
         files.forEach((f) => {
             if(count > 0){
-                // // const scriptTag = templates.script.replace("{{ file }}", f);
-                // const scriptTag = dom.window.document.createElement("script");
-                // scriptTag.src = f;
-                // dom.window.document.body.appendChild(scriptTag);
-                // count++;
                 const scriptTag = prepend + "\t" + templates.script.replace("{{ file }}", f) + "\n";
                 htmlstr = htmlstr.replace(prepend, scriptTag);
             }
             count++;
         });
-
-        // htmlstr = dom.serialize();
     }
 
     const dir = path.join(out, `${name}/`);

@@ -11,14 +11,19 @@ const fs = require("fs");
 const { error } = require("./utils");
 const { compile } = require("./compiler");
 
+const { createProject }  = require("./create")
+
 const arguments = process.argv.slice(2, process.argv.length);
 switch(arguments[0]) {
+    
     case "create": {
         const projectName = arguments[1];
+        
         if(!projectName)
-            error("Error: No project name specified!");
+            error("Error: No project name specified!", "stacks-js create <project_name>");
 
         console.log(`creating project ${projectName}`);
+        createProject(__dirname, process, projectName);
 
         break;
     }
