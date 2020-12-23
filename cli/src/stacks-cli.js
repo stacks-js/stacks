@@ -7,7 +7,7 @@ const path = require("path");
 const program = require("commander");
 const { exit } = require("process");
 const fs = require("fs");
-const https = require('https');
+const ncp = require('ncp').ncp;
 const exec = require('await-exec');
 const Spinner = require('cli-spinner').Spinner;
 const readline = require('readline').createInterface({
@@ -19,6 +19,8 @@ const addingPackagesText = "Adding necessary packages...";
 const downloadingComponentsText = "Downloading separate components...";
 const packages = {/*"stacks-js": false, */"parcel-bundler": true};
 const components = {"boostrap-css" : "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"}
+
+const { download, sleep } = require("./utils");
 
 program
     .version("0.0.1")
@@ -40,33 +42,6 @@ const appName = process.argv[2];
 console.log(`Creating app ${chalk.green(appName)} with language ${chalk.red(lang ? "Javascript" : "Typescript")}`)
 console.log(chalk.yellowBright(`This could take a few seconds...`));
 
-const download = (url, dest, cb) => {
-    var file = fs.createWriteStream(dest);
-    https.get(url, (response) => {
-        response.pipe(file);
-        file.on('finish', () => {
-            file.close(cb);     
-        });
-    });
-}
-
-const readFile = (path) => {
-    fs.readFile(path, (err, data) => {
-        if (err) {
-            console.log("H")
-            console.log(err)
-            return
-        }
-        return data;
-    })
-}
-
-const sleep = (ms) => {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}   
-
 let mainjsContent;
 try{
     mainjsContent = fs.readFileSync(path.join(__dirname, "../lib/main.js"), 'utf8');
@@ -74,6 +49,8 @@ try{
     console.log(chalk.redBright("Something went wrong! Couldn't find template files."));
     exit();
 }
+
+const libFolder = path.join(__dirname, "../lib/");
 
 const createProject = () => {
     const projectPath = path.join(process.cwd(), appName);
@@ -143,9 +120,10 @@ const createProject = () => {
             load2.start();
 
             const src = path.join(projectPath, "src");
-            const css = path.join(src, "css");
+            const lib = path.join(projectPath, "lib");
+            const css = path.join(lib, "css");
 
-            fs.mkdir(src, (err) => {
+            fs.mkdir(lib, (err) => {
                 if(err) {
                     console.log(chalk.redBright("An error occurred!") + e + chalk.green(css));
                     exit();
@@ -176,21 +154,34 @@ const createProject = () => {
 
                     console.log(chalk.blue("\nComponents downloaded!"));
                     await load2.stop();
-                    
-
-                    process.chdir("src");
 
                     console.log(chalk.yellow("Generating project files..."));
 
-                    fs.writeFile("main.js", mainjsContent, async (err) => {
+                    fs.mkdir(src, async (err) => {
                         if(err) {
-                            console.log(chalk.redBright("Couldn't write to file."));
+                            console.log(chalk.redBright("An error occurred."));
                             exit();
                         }
-
-                        await sleep(100);
-                        console.log(chalk.blue("Project files written!"))
                         
+                        process.chdir("src");
+
+                        fs.readdir(libFolder, (err, files) => {
+                            if(err) {
+                                console.log(chalk.redBright("Couldn't setup project files!"))
+                                exit();
+                            }
+
+                            files.forEach(file => {
+                                ncp(path.join(libFolder, file), path.join(process.cwd(), file), (err) => {
+                                    if(err) {
+                                        console.log(chalk.redBright("Failed to create file!"));
+                                        exit();
+                                    }
+                                })
+                            });
+
+                            console.log(chalk.blue("Project files written!"))
+                        });
                     });
                 })
             });
