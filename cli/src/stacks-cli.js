@@ -180,7 +180,13 @@ const createProject = () => {
                                 })
                             });
 
-                            console.log(chalk.blue("Project files written!"))
+                            console.log(chalk.blue("Project files written!"));
+
+                            console.log(chalk.yellow("Creating run scripts..."));
+                            
+                            process.chdir("../")
+                            let package_raw = fs.readFileSync('package.json');
+                            let package_json = JSON.parse(package_raw);
                         });
                     });
                 })
