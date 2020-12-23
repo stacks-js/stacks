@@ -20,7 +20,6 @@ const downloadingComponentsText = "Downloading separate components...";
 const packages = {/*"stacks-js": false, */"parcel-bundler": true};
 const components = {"boostrap-css" : "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"}
 
-
 program
     .version("0.0.1")
     .description("A CLI to generate stacks.js projects to jumpstart your apps!")
@@ -41,7 +40,7 @@ const appName = process.argv[2];
 console.log(`Creating app ${chalk.green(appName)} with language ${chalk.red(lang ? "Javascript" : "Typescript")}`)
 console.log(chalk.yellowBright(`This could take a few seconds...`));
 
-const download = function(url, dest, cb) {
+const download = (url, dest, cb) => {
     var file = fs.createWriteStream(dest);
     https.get(url, (response) => {
         response.pipe(file);
@@ -50,6 +49,32 @@ const download = function(url, dest, cb) {
         });
     });
 }
+
+const readFile = (path) => {
+    fs.readFile(path, (err, data) => {
+        if (err) {
+            console.log("H")
+            console.log(err)
+            return
+        }
+        return data;
+    })
+}
+
+const sleep = (ms) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}   
+
+let mainjsContent;
+try{
+    mainjsContent = fs.readFileSync(path.join(__dirname, "../lib/main.js"), 'utf8');
+} catch(e) {
+    console.log(chalk.redBright("Something went wrong! Couldn't find template files."));
+    exit();
+}
+
 const createProject = () => {
     const projectPath = path.join(process.cwd(), appName);
 
@@ -73,8 +98,6 @@ const createProject = () => {
             console.log(chalk.redBright("Project creation failed! Make sure the folder doesn't already exist!"));
             exit();
         }
-
-        console.log(chalk.yellow(projectPath));
         
         // go to the new folder
         process.chdir(projectPath);
@@ -98,7 +121,7 @@ const createProject = () => {
             if(yarn)
                 await exec("yarn")
             else
-                setTimeout(()=>{}, 100);
+                await sleep(100);
 
             // add stacks.js package to project
             load.setSpinnerTitle(chalk.yellow(addingPackagesText) + chalk.red(" (stacks-js)"));
@@ -112,10 +135,9 @@ const createProject = () => {
                 await exec(`${yarn ? "yarn add" : "npm install "} ${package} ${dev ? (yarn ? "-D" : "--save-dev") : ""}`);
             });
 
-            setTimeout(() => {
-                console.log(chalk.blue("\nPackages successfully added!"));
-                load.stop();
-            }, 250);
+            await sleep(100);
+            console.log(chalk.blue("\nPackages successfully added!"));
+            load.stop();
             
             const load2 = Spinner(chalk.yellow(downloadingComponentsText));
             load2.start();
@@ -129,7 +151,7 @@ const createProject = () => {
                     exit();
                 }
 
-                fs.mkdir(css, (err) => {
+                fs.mkdir(css, async (err) => {
                     if(err) {
                         console.log(chalk.redBright("An error occurred!") + e + chalk.green(css));
                         exit(); 
@@ -150,35 +172,28 @@ const createProject = () => {
                         })
                     });
 
-                    setTimeout(async () => {
-                        console.log(chalk.blue("\nComponents downloaded!"));
-                        await load2.stop();
-                        
-                    }, 250);
+                    await sleep(100);
 
+                    console.log(chalk.blue("\nComponents downloaded!"));
+                    await load2.stop();
+                    
+
+                    process.chdir("src");
+
+                    console.log(chalk.yellow("Generating project files..."));
+
+                    fs.writeFile("main.js", mainjsContent, async (err) => {
+                        if(err) {
+                            console.log(chalk.redBright("Couldn't write to file."));
+                            exit();
+                        }
+
+                        await sleep(100);
+                        console.log(chalk.blue("Project files written!"))
+                        
+                    });
                 })
             });
-
-            // fs.mkdir(css, (e) => {
-            //     if(e) {
-            //         exit();
-            //     }
-
-            //     // download other components
-            //     Object.keys(components).forEach((component) => {
-            //         const link = components[component];
-                    
-            //         const downloadPath = path.join(css, "bootstrap.min.css");
-                    
-            //         load.setSpinnerTitle(chalk.yellow(downloadingComponentsText) + chalk.red(` (${component})`));
-            //         console.log(downloadPath)
-            //     });
-
-            //     setTimeout(() => {
-            //         console.log(chalk.blue("\nComponents downloaded!"));
-            //         load.stop();
-            //     }, 250);
-            // });
         });
     })
 }
