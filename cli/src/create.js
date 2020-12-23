@@ -5,6 +5,7 @@ const chalk = require("chalk");
 const path = require("path");
 const { exit } = require("process");
 const fs = require("fs");
+const figlet = require("figlet");
 
 const addingPackagesText = "Adding necessary packages...";
 const downloadingComponentsText = "Downloading separate components...";
@@ -158,11 +159,40 @@ const createProject = (dname, proc, appName) => {
 
                             console.log(chalk.blue("Project files written!"));
 
-                            console.log(chalk.yellow("Creating run scripts..."));
+                            console.log(chalk.yellow("Setting up configuration..."));
+
+                            proc.chdir("../");
                             
-                            proc.chdir("../")
-                            let package_raw = fs.readFileSync('package.json');
-                            let package_json = JSON.parse(package_raw);
+                            const stacksconfigPath = path.join(proc.cwd(), "stacks-config.json");
+                            
+                            const stacks_config = {
+                                project:appName, 
+                                "src": "./src/",
+                                "out": "./dist/",
+                                "lang": true,
+                                "pkg": yarn ? "yarn" : "npm",
+                                "watch": false
+                            }
+
+                            fs.writeFileSync(stacksconfigPath, JSON.stringify(stacks_config, null, 2));
+
+                            console.log(chalk.blue("Stacks configuration set!"));
+                            console.log(chalk.yellow("Setting up scripts..."));
+
+                            const package_raw = fs.readFileSync('package.json');
+                            const package_json = JSON.parse(package_raw);
+                            const scripts = package_json.scripts;
+                            
+                            delete scripts.test;
+                            scripts.build = "npx stacks-cli compile";
+
+                            package_json.scripts = scripts;
+
+                            fs.writeFileSync('package.json', JSON.stringify(package_json, null, 2));
+                            console.log(chalk.blue("Scripts set!"));
+
+                            console.log(chalk.green("Project Created!"));
+                            console.log("stacks.js | © Sanjith Udupa 2020");
                         });
                     });
                 })

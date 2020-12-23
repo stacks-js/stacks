@@ -15,7 +15,16 @@ const { createProject }  = require("./create")
 
 const arguments = process.argv.slice(2, process.argv.length);
 switch(arguments[0]) {
-    
+
+    case "-h": {
+
+    }
+    case "--help": {
+        // console.log("")
+        console.log("stacks.js | © Sanjith Udupa 2020");
+        break;
+    }
+
     case "create": {
         const projectName = arguments[1];
         
