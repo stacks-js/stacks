@@ -3,6 +3,8 @@ const fs = require('fs');
 const chalk = require('chalk');
 const { exit } = require('process');
 
+const insertAt = (str, sub, pos) => `${str.slice(0, pos)}${sub}${str.slice(pos)}`;
+
 const download = (url, dest, cb) => {
     var file = fs.createWriteStream(dest);
     https.get(url, (response) => {
@@ -24,4 +26,4 @@ const error = (error) => {
     exit();
 }
 
-module.exports = { download, sleep, error };
+module.exports = { download, sleep, error, insertAt };

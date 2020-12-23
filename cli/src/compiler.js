@@ -1,8 +1,10 @@
 const chalk = require("chalk");
 const fs = require("fs");
 const path = require("path");
-const { error } = require("./utils");
+const { error, insertAt } = require("./utils");
 const { startCase } = require("lodash");
+const ncp = require("ncp").ncp;
+ncp.limit = 16;
 
 const templates = {};
 
@@ -45,7 +47,7 @@ const compile = (dir) => {
             if(isFile) {
                 // check if it is a stacks file
                 if(file.slice(-2) == (ext)) {
-                    createPage(file, undefined, out);
+                    createPage([file], src, out);
                 }
             }else {
                 // check in local directory for it's main file
@@ -68,22 +70,61 @@ const compile = (dir) => {
                     if(!main)
                         error(`Error: Couldn't find view file: ${chalk.bold(thisOne)}`);
                     
-                    console.log(`Loaded other view with ${thisOne} and others ${others}`);
+                    // console.log(`Loaded other view with ${thisOne} and others ${others}`);
+                    const theseFiles = [main];
+                    others.forEach(other => {
+                        theseFiles.push(other);
+                    });
+
+                    createPage(theseFiles, filePath, out);
                 })
             }
         });
     });
 }
 
-const createPage = (main, others, out) => {
+const createPage = (files, src, out) => {
+    console.log(chalk.yellow(files))
+    const main = files[0];
     const name = main.slice(0, -3);
-    const htmlstr = templates.html.replace("{{ name }}", startCase(name));
+    let htmlstr = templates.html.replace("{{ name }}", startCase(name)).replace("{{ view }}", main);
+
+
+    if(files.length > 1) {
+        // //there are more, so we need to reference the new scripts
+        // const dom = new JSDOM(htmlstr);
+        const prepend = "</script>\n";
+
+        let count = 0;
+        files.forEach((f) => {
+            if(count > 0){
+                // // const scriptTag = templates.script.replace("{{ file }}", f);
+                // const scriptTag = dom.window.document.createElement("script");
+                // scriptTag.src = f;
+                // dom.window.document.body.appendChild(scriptTag);
+                // count++;
+                const scriptTag = prepend + "\t" + templates.script.replace("{{ file }}", f) + "\n";
+                htmlstr = htmlstr.replace(prepend, scriptTag);
+            }
+            count++;
+        });
+
+        // htmlstr = dom.serialize();
+    }
 
     const dir = path.join(out, `${name}/`);
     fs.mkdirSync(dir, { recursive: true });
 
     const pagePath = path.join(dir, `${name}.html`);
     fs.writeFileSync(pagePath, htmlstr);
+
+    //copy other main file and others
+    files.forEach(file => {
+        ncp(path.join(src, file.toString()), path.join(dir, file.toString()), (err) => {
+            if(err)
+                error(`Error: Failed to copy file ${chalk.bold(file)}`);
+        });
+    });
 }
 
 module.exports = { compile }
