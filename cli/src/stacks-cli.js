@@ -7,6 +7,7 @@ const path = require("path");
 const program = require("commander");
 const { exit } = require("process");
 const fs = require("fs");
+const https = require('https');
 const exec = require('await-exec');
 const Spinner = require('cli-spinner').Spinner;
 const readline = require('readline').createInterface({
@@ -15,7 +16,10 @@ const readline = require('readline').createInterface({
 });
 
 const addingPackagesText = "Adding necessary packages...";
+const downloadingComponentsText = "Downloading separate components...";
 const packages = {/*"stacks-js": false, */"parcel-bundler": true};
+const components = {"boostrap-css" : "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"}
+
 
 program
     .version("0.0.1")
@@ -37,6 +41,15 @@ const appName = process.argv[2];
 console.log(`Creating app ${chalk.green(appName)} with language ${chalk.red(lang ? "Javascript" : "Typescript")}`)
 console.log(chalk.yellowBright(`This could take a few seconds...`));
 
+const download = function(url, dest, cb) {
+    var file = fs.createWriteStream(dest);
+    https.get(url, (response) => {
+        response.pipe(file);
+        file.on('finish', () => {
+            file.close(cb);     
+        });
+    });
+}
 const createProject = () => {
     const projectPath = path.join(process.cwd(), appName);
 
@@ -60,6 +73,8 @@ const createProject = () => {
             console.log(chalk.redBright("Project creation failed! Make sure the folder doesn't already exist!"));
             exit();
         }
+
+        console.log(chalk.yellow(projectPath));
         
         // go to the new folder
         process.chdir(projectPath);
@@ -98,14 +113,72 @@ const createProject = () => {
             });
 
             setTimeout(() => {
-                console.log(chalk.blue("\nAdded packages!"));
+                console.log(chalk.blue("\nPackages successfully added!"));
                 load.stop();
             }, 250);
             
-            // load.setSpinnerTitle(chalk.yellow(addingPackagesText) + chalk.blueBright(" (parcel-bundler)"));
-            
-            // load.text = " Adding necessary packages..."
-            // load.stop();
+            const load2 = Spinner(chalk.yellow(downloadingComponentsText));
+            load2.start();
+
+            const src = path.join(projectPath, "src");
+            const css = path.join(src, "css");
+
+            fs.mkdir(src, (err) => {
+                if(err) {
+                    console.log(chalk.redBright("An error occurred!") + e + chalk.green(css));
+                    exit();
+                }
+
+                fs.mkdir(css, (err) => {
+                    if(err) {
+                        console.log(chalk.redBright("An error occurred!") + e + chalk.green(css));
+                        exit(); 
+                    }
+
+                    Object.keys(components).forEach((component) => {
+                        const link = components[component];
+                        
+                        const downloadPath = path.join(css, "bootstrap.min.css");
+                        
+                        load2.setSpinnerTitle(chalk.yellow(downloadingComponentsText) + chalk.red(` (${component})`));
+                        
+                        download(link, downloadPath, (err) => {
+                            if(err) {
+                                console.log(chalk.redBright("An error occurred!") + e + chalk.green(css));
+                                exit();
+                            }
+                        })
+                    });
+
+                    setTimeout(async () => {
+                        console.log(chalk.blue("\nComponents downloaded!"));
+                        await load2.stop();
+                        
+                    }, 250);
+
+                })
+            });
+
+            // fs.mkdir(css, (e) => {
+            //     if(e) {
+            //         exit();
+            //     }
+
+            //     // download other components
+            //     Object.keys(components).forEach((component) => {
+            //         const link = components[component];
+                    
+            //         const downloadPath = path.join(css, "bootstrap.min.css");
+                    
+            //         load.setSpinnerTitle(chalk.yellow(downloadingComponentsText) + chalk.red(` (${component})`));
+            //         console.log(downloadPath)
+            //     });
+
+            //     setTimeout(() => {
+            //         console.log(chalk.blue("\nComponents downloaded!"));
+            //         load.stop();
+            //     }, 250);
+            // });
         });
     })
 }
