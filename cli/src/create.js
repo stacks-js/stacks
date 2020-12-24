@@ -23,7 +23,7 @@ const createProject = (dname, proc, appName) => {
     console.log(chalk.yellowBright(`This could take a few seconds...`));
 
 
-    const libFolder = path.join(dname, "../lib/");
+    const sampleFolder = path.join(dname, "../samples/");
 
     const readline = require('readline').createInterface({
         input: proc.stdin,
@@ -142,14 +142,14 @@ const createProject = (dname, proc, appName) => {
                         
                         proc.chdir("src");
 
-                        fs.readdir(libFolder, (err, files) => {
+                        fs.readdir(sampleFolder, (err, files) => {
                             if(err) {
                                 console.log(chalk.redBright("Couldn't setup project files!"))
                                 exit();
                             }
 
                             files.forEach(file => {
-                                ncp(path.join(libFolder, file), path.join(proc.cwd(), file), (err) => {
+                                ncp(path.join(sampleFolder, file), path.join(proc.cwd(), file), (err) => {
                                     if(err) {
                                         console.log(chalk.redBright("Failed to create file!"));
                                         exit();
@@ -184,7 +184,8 @@ const createProject = (dname, proc, appName) => {
 
                             package_json.scripts = {
                                 "build" : "node /Users/sanjithudupa/Documents/Code/Experiments/StacksFramework/cli/src/stacks-cli.js compile --watch false",
-                                "serve" : "node /Users/sanjithudupa/Documents/Code/Experiments/StacksFramework/cli/src/stacks-cli.js compile --serve"
+                                "dev" : "node /Users/sanjithudupa/Documents/Code/Experiments/StacksFramework/cli/src/stacks-cli.js compile --serve",
+                                "prod" : "node /Users/sanjithudupa/Documents/Code/Experiments/StacksFramework/cli/src/stacks-cli.js compile --watch false --prod"
                             };
 
                             fs.writeFileSync('package.json', JSON.stringify(package_json, null, 2));

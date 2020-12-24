@@ -12,7 +12,7 @@ ncp.limit = 16;
 const templates = {};
 let firstPage;
 
-const compile = async (dir, shouldServe, shouldWatch) => {
+const compile = async (dir, shouldServe, shouldWatch, prod) => {
     const packagejson = path.join(dir, "package.json");
     const stacksconfig = path.join(dir, "stacks-config.json");
 
@@ -42,13 +42,13 @@ const compile = async (dir, shouldServe, shouldWatch) => {
 
     fs.mkdirSync(out, {recursive: true});
     
-    compileFiles(src, ext, out, final, shouldServe);
+    compileFiles(src, ext, out, final, shouldServe, prod);
 
     if(watch) {
         const watcher = chokidar.watch(src, {persistent: true});
         watcher
             .on('change', _ => {
-                compileFiles(src, ext, out, final, false);
+                compileFiles(src, ext, out, final, false, prod);
                 console.log(chalk.green("Reloaded!"))
             });
 
@@ -56,7 +56,7 @@ const compile = async (dir, shouldServe, shouldWatch) => {
     }
 }
 
-const compileFiles = (src, ext, out, final, shouldServe) => {
+const compileFiles = (src, ext, out, final, shouldServe, prod) => {
     fs.readdir(src, async (err, files) => {
         if(err)
             error(`Error: Couldn't read project files`);
@@ -103,7 +103,7 @@ const compileFiles = (src, ext, out, final, shouldServe) => {
         });
 
         setTimeout(() => {
-            bundle(out, final, () => {
+            bundle(out, final, prod === "true", () => {
                 if(shouldServe)
                     serve(final, 6969, firstPage);
                 });

@@ -4,11 +4,11 @@ const path = require('path');
 const chalk = require("chalk");
 const { error } = require('./utils');
 
-const bundle = async (tmp, out, cb) => {
+const bundle = async (tmp, out, prod, cb) => {
     const entryPoint = `${tmp}**/*.html`;
     // const outDir = path.join(dir, out);
 
-    const bundler = new Bundler(entryPoint, { outDir: out, watch: false });
+    const bundler = new Bundler(entryPoint, { outDir: out, watch: false, cache: !prod, minify: prod, target: "browser" });
     await bundler.bundle();
 
     fs.rmdir(tmp, { recursive: true }, (err) => {
