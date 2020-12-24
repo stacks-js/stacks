@@ -34,7 +34,14 @@ export class Block {
 
     link(href:string) {
         this.isLink = true;
-        this.params["href"] = href;
+        let HREF = href;
+
+        if(href.startsWith("page:")){
+            let page = href.substring(5);
+            HREF = `../${page}/${page}.html`
+        }
+
+        this.params["href"] = HREF;
         this.params["tag"] = "a";
         return this;
     }
