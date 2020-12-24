@@ -7,6 +7,7 @@ const { startCase, add } = require("lodash");
 const ncp = require("ncp").ncp;
 const { serve } = require("./serve");
 const chokidar = require("chokidar");
+const { cyanBright } = require("chalk");
 ncp.limit = 16;
 
 const templates = {};
@@ -35,10 +36,12 @@ const compile = async (dir, shouldServe, shouldWatch, prod) => {
     const templateDir = path.join(__dirname, "../template/");
     const templateHTML = fs.readFileSync(path.join(templateDir, "template.html")).toString();
     const templateScript = fs.readFileSync(path.join(templateDir, "script.txt")).toString();
+    const templateImport = fs.readFileSync(path.join(templateDir, "import.txt")).toString();
 
     templates.dir = templateDir;
     templates.html = templateHTML;
     templates.script = templateScript;
+    templates.import = templateImport;
 
     fs.mkdirSync(out, {recursive: true});
     
@@ -118,38 +121,98 @@ const createPage = async (files, src, out) => {
     const name = main.slice(0, -3);
     let htmlstr = templates.html.replace("{{ name }}", startCase(name)).replace("{{ view }}", main);
 
-
-    if(files.length > 1) {
-        // //there are more, so we need to reference the new scripts
-        // const dom = new JSDOM(htmlstr);
-        const prepend = "</script>\n";
-
-        let count = 0;
-        files.forEach((f) => {
-            if(count > 0){
-                const scriptTag = prepend + "\t" + templates.script.replace("{{ file }}", f) + "\n";
-                htmlstr = htmlstr.replace(prepend, scriptTag);
-            }
-            count++;
-        });
-    }
-
-    const dir = path.join(out, `${name}/`);
-    fs.mkdirSync(dir, { recursive: true });
-
-    const pagePath = path.join(dir, `${name}.html`);
-    fs.writeFileSync(pagePath, htmlstr);
-
-    if(!firstPage)
-        firstPage = `${name}/${name}.html`;
-
-    //copy other main file and others
-    files.forEach(file => {
-        ncp(path.join(src, file.toString()), path.join(dir, file.toString()), (err) => {
-            if(err)
-                error(`Error: Failed to copy file ${chalk.bold(file)}`);
+    importAssets(path.join(out, "../assets/"), htmlstr, src).then((html) => {
+        htmlstr = html;
+        
+        if(files.length > 1) {
+            // //there are more, so we need to reference the new scripts
+            // const dom = new JSDOM(htmlstr);
+            const prepend = "</script>\n";
+    
+            let count = 0;
+            files.forEach((f) => {
+                if(count > 0){
+                    const scriptTag = prepend + "\t" + templates.script.replace("{{ file }}", f) + "\n";
+                    htmlstr = htmlstr.replace(prepend, scriptTag);
+                }
+                count++;
+            });
+        }
+    
+        const dir = path.join(out, `${name}/`);
+        fs.mkdirSync(dir, { recursive: true });
+    
+        const pagePath = path.join(dir, `${name}.html`);
+        fs.writeFileSync(pagePath, htmlstr);
+    
+        if(!firstPage)
+            firstPage = `${name}/${name}.html`;
+    
+        //copy other main file and others
+        files.forEach(file => {
+            ncp(path.join(src, file.toString()), path.join(dir, file.toString()), (err) => {
+                if(err)
+                    error(`Error: Failed to copy file ${chalk.bold(file)}`);
+            });
         });
     });
 }
+
+const importAssets = (assets, html, dir, cb) => {
+
+    return new Promise((resolve, reject) => {
+        let finalHTML = html;
+        fs.readdir(assets, (err, files) => {
+            if(err)
+                error("An error occurred!");
+            
+            const iterator = new Promise((resolve, reject) => {
+                files.forEach((file, index, array) => {
+                    const assetTypePath = path.join(assets, file);
+
+                    if(fs.statSync(assetTypePath).isDirectory()) {
+                        fs.readdir(assetTypePath, (err, files) => {
+                            if(err)
+                                error("An error occurred in copying!");
+                            
+                            const iterator2 = new Promise((rs, rj) => {
+                                files.forEach((file, idx, arr) => {
+                                    const fileAbsolute = path.join(assetTypePath, file);
+                                    const relative = path.relative(dir, fileAbsolute);
+                                    const importTxt = templates.import.replace("{{ path }}", relative);
+                                    finalHTML = finalHTML.replace("//{{ imports }}", `\n${importTxt}`).replace("{{ name }}", Math.random().toString(36).substring(7) + "s");
+
+                                    if (idx === arr.length -1) rs();
+                                });
+                            });
+
+                            iterator2.then(() => {
+                                resolve();
+                            });
+                        });
+                    }
+
+                    // if (index === array.length -1) resolve();
+                });
+            });
+
+            iterator.then(() => {
+                // console.log(chalk.red(finalHTML))
+                resolve(finalHTML);
+            });
+            
+        });
+    });
+}
+
+// addStylesheets = (file, html, css) => {
+//     let count = 0;
+//     fs.readdir(css, (f) => {
+//         if(count == 0)
+//             html.replace("{{ style }}", `${f}`);
+
+//         count++;
+//     });
+// }
 
 module.exports = { compile }
