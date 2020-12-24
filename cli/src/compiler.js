@@ -3,9 +3,10 @@ const fs = require("fs");
 const path = require("path");
 const { error, insertAt } = require("./utils");
 const { bundle } = require("./bundle");
-const { startCase } = require("lodash");
+const { startCase, add } = require("lodash");
 const ncp = require("ncp").ncp;
 const { serve } = require("./serve");
+const chokidar = require("chokidar");
 ncp.limit = 16;
 
 const templates = {};
@@ -24,6 +25,7 @@ const compile = async (dir, shouldServe) => {
     const package = JSON.parse(fs.readFileSync(packagejson));
     const config = JSON.parse(fs.readFileSync(stacksconfig));
 
+    const watch = config.watch;
     const src = path.join(dir, config.src);
     const out = path.join(dir, "sjs_tmp/");
     const final = path.join(dir, config.out);
@@ -40,6 +42,20 @@ const compile = async (dir, shouldServe) => {
 
     fs.mkdirSync(out, {recursive: true});
     
+    compileFiles(src, ext, out, final, shouldServe);
+
+    if(watch) {
+        const watcher = chokidar.watch(src, {persistent: true});
+        watcher
+            .on('change', _ => {
+                compileFiles(src, ext, out, final, false);
+            });
+
+        console.log(chalk.green("Watching for changes..."));
+    }
+}
+
+const compileFiles = (src, ext, out, final, shouldServe) => {
     fs.readdir(src, async (err, files) => {
         if(err)
             error(`Error: Couldn't read project files`);
@@ -85,14 +101,18 @@ const compile = async (dir, shouldServe) => {
             }
         });
 
-        bundle(out, final, () => {
-            if(shouldServe)
-                serve(final, 6969, firstPage);
-        });
+        setTimeout(() => {
+            bundle(out, final, () => {
+                if(shouldServe)
+                    serve(final, 6969, firstPage);
+                });
+            }
+        , 250);
+        // });
     });
 }
 
-const createPage = (files, src, out) => {
+const createPage = async (files, src, out) => {
     const main = files[0];
     const name = main.slice(0, -3);
     let htmlstr = templates.html.replace("{{ name }}", startCase(name)).replace("{{ view }}", main);

@@ -14,8 +14,7 @@ const bundle = async (tmp, out, cb) => {
     fs.rmdir(tmp, { recursive: true }, (err) => {
         if(err)
             error(`Error: Failed to delete ${chalk.bold(tmp)} directory! ${err}`);
-        console.log("Deleted!");
-
+        
         cb();
     });
 }
