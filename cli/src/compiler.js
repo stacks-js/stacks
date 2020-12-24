@@ -121,8 +121,8 @@ const createPage = async (files, src, out) => {
     const name = main.slice(0, -3);
     let htmlstr = templates.html.replace("{{ name }}", startCase(name)).replace("{{ view }}", main);
 
-    importAssets(path.join(out, "../assets/"), htmlstr, src).then((html) => {
-        htmlstr = html;
+    // importAssets(path.join(out, "../assets/"), htmlstr, src).then((html) => {
+    //     htmlstr = html;
         
         if(files.length > 1) {
             // //there are more, so we need to reference the new scripts
@@ -155,7 +155,7 @@ const createPage = async (files, src, out) => {
                     error(`Error: Failed to copy file ${chalk.bold(file)}`);
             });
         });
-    });
+    // });
 }
 
 const importAssets = (assets, html, dir, cb) => {
