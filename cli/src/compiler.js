@@ -5,11 +5,13 @@ const { error, insertAt } = require("./utils");
 const { bundle } = require("./bundle");
 const { startCase } = require("lodash");
 const ncp = require("ncp").ncp;
+const { serve } = require("./serve");
 ncp.limit = 16;
 
 const templates = {};
+let firstPage;
 
-const compile = async (dir) => {
+const compile = async (dir, shouldServe) => {
     const packagejson = path.join(dir, "package.json");
     const stacksconfig = path.join(dir, "stacks-config.json");
 
@@ -82,8 +84,11 @@ const compile = async (dir) => {
                 });
             }
         });
-        
-        bundle(dir, out, final);
+
+        bundle(out, final, () => {
+            if(shouldServe)
+                serve(final, 6969, firstPage);
+        });
     });
 }
 
@@ -113,6 +118,9 @@ const createPage = (files, src, out) => {
 
     const pagePath = path.join(dir, `${name}.html`);
     fs.writeFileSync(pagePath, htmlstr);
+
+    if(!firstPage)
+        firstPage = `${name}/${name}.html`;
 
     //copy other main file and others
     files.forEach(file => {

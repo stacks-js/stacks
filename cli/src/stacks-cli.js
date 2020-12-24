@@ -38,7 +38,8 @@ switch(arguments[0]) {
     }
 
     case "compile": {
-        compile(process.cwd());
+        const serve = arguments.includes("--serve");
+        compile(process.cwd(), serve);
         break;
     }
 }
