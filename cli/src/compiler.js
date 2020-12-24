@@ -49,6 +49,7 @@ const compile = async (dir, shouldServe) => {
         watcher
             .on('change', _ => {
                 compileFiles(src, ext, out, final, false);
+                console.log(chalk.green("Reloaded!"))
             });
 
         console.log(chalk.green("Watching for changes..."));
