@@ -19,7 +19,7 @@ class Another extends Block {
         return new Stack("y", 
             new SubView(),
             new Text("Go back")
-                .link("main")
+                .link("page:main")
         );
     }
 }

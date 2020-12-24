@@ -6,7 +6,6 @@ const path = require("path");
 const { exit } = require("process");
 const fs = require("fs");
 const figlet = require("figlet");
-
 const addingPackagesText = "Adding necessary packages...";
 const downloadingComponentsText = "Downloading separate components...";
 const packages = {/*"stacks-js": false, "parcel-bundler": true*/};
@@ -97,14 +96,17 @@ const createProject = (dname, proc, appName) => {
             load2.start();
 
             const src = path.join(projectPath, "src");
-            const lib = path.join(projectPath, "lib");
-            const css = path.join(lib, "css");
+            const assets = path.join(projectPath, "assets");
+            const css = path.join(assets, "css");
+            const images = path.join(assets, "images");
 
-            fs.mkdir(lib, (err) => {
+            fs.mkdir(assets, (err) => {
                 if(err) {
                     console.log(chalk.redBright("An error occurred!") + err + chalk.green(css));
                     exit();
                 }
+
+                fs.mkdirSync(images);
 
                 fs.mkdir(css, async (err) => {
                     if(err) {
@@ -134,6 +136,24 @@ const createProject = (dname, proc, appName) => {
 
                     console.log(chalk.yellow("Generating project files..."));
 
+                    const copyFolder = path.join(dname, "../copy");
+                    fs.readdir(copyFolder, (err, files) => {
+                        if(err) {
+                            console.log(chalk.redBright("An error occurred."));
+                            exit();
+                        }
+
+                        files.forEach(file => {
+                            const newPath = path.join(proc.cwd(), file);
+                            ncp(path.join(copyFolder, file), newPath, (err) => {
+                                if(err) {
+                                    console.log(chalk.redBright("File copy failed."));
+                                    exit();
+                                }
+                            });
+                        });
+                    });
+
                     fs.mkdir(src, async (err) => {
                         if(err) {
                             console.log(chalk.redBright("An error occurred."));
@@ -154,7 +174,7 @@ const createProject = (dname, proc, appName) => {
                                         console.log(chalk.redBright("Failed to create file!"));
                                         exit();
                                     }
-                                })
+                                });
                             });
 
                             console.log(chalk.blue("Project files written!"));

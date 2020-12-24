@@ -20,7 +20,7 @@ class View extends Block {
                 }),
 
             new Text("Go to another page!")
-                .link("another")
+                .link("page:another")
         )
     }
 }
