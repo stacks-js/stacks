@@ -17,7 +17,7 @@ const arguments = process.argv.slice(2, process.argv.length);
 switch(arguments[0]) {
 
     case "-h": {
-
+        
     }
     case "--help": {
         // console.log("")

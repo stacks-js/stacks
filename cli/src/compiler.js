@@ -2,13 +2,14 @@ const chalk = require("chalk");
 const fs = require("fs");
 const path = require("path");
 const { error, insertAt } = require("./utils");
+const { bundle } = require("./bundle");
 const { startCase } = require("lodash");
 const ncp = require("ncp").ncp;
 ncp.limit = 16;
 
 const templates = {};
 
-const compile = (dir) => {
+const compile = async (dir) => {
     const packagejson = path.join(dir, "package.json");
     const stacksconfig = path.join(dir, "stacks-config.json");
 
@@ -22,7 +23,8 @@ const compile = (dir) => {
     const config = JSON.parse(fs.readFileSync(stacksconfig));
 
     const src = path.join(dir, config.src);
-    const out = path.join(dir, config.out);
+    const out = path.join(dir, "sjs_tmp/");
+    const final = path.join(dir, config.out);
 
     const ext = config.lang ? "js" : "ts";
 
@@ -36,7 +38,7 @@ const compile = (dir) => {
 
     fs.mkdirSync(out, {recursive: true});
     
-    fs.readdir(src, (err, files) => {
+    fs.readdir(src, async (err, files) => {
         if(err)
             error(`Error: Couldn't read project files`);
         
@@ -77,14 +79,15 @@ const compile = (dir) => {
                     });
 
                     createPage(theseFiles, filePath, out);
-                })
+                });
             }
         });
+        
+        bundle(dir, out, final);
     });
 }
 
 const createPage = (files, src, out) => {
-    console.log(chalk.yellow(files))
     const main = files[0];
     const name = main.slice(0, -3);
     let htmlstr = templates.html.replace("{{ name }}", startCase(name)).replace("{{ view }}", main);

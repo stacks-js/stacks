@@ -25,6 +25,7 @@
     "figlet": "^1.5.0",
     "lodash": "^4.17.20",
     "ncp": "^2.0.0",
+    "parcel-bundler": "^1.12.4",
     "path": "^0.12.7"
   },
   "devDependencies": {
