@@ -12,7 +12,7 @@ ncp.limit = 16;
 const templates = {};
 let firstPage;
 
-const compile = async (dir, shouldServe) => {
+const compile = async (dir, shouldServe, shouldWatch) => {
     const packagejson = path.join(dir, "package.json");
     const stacksconfig = path.join(dir, "stacks-config.json");
 
@@ -25,7 +25,7 @@ const compile = async (dir, shouldServe) => {
     const package = JSON.parse(fs.readFileSync(packagejson));
     const config = JSON.parse(fs.readFileSync(stacksconfig));
 
-    const watch = config.watch;
+    const watch = (shouldWatch != undefined) ? shouldWatch : config.watch;
     const src = path.join(dir, config.src);
     const out = path.join(dir, "sjs_tmp/");
     const final = path.join(dir, config.out);

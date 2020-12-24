@@ -4,7 +4,7 @@
  * The *link* attribute leads to the next page.
  * @see another.js
  */
-import { Block, Text, StacksRenderer } from "stacks-js";
+import { Block, Text, Stack, StacksRenderer } from "stacks-js";
 
 class View extends Block {
     constructor() {
@@ -20,7 +20,7 @@ class View extends Block {
                 }),
 
             new Text("Go to another page!")
-                .link("two.html")
+                .link("another")
         )
     }
 }

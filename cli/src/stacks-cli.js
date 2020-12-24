@@ -39,7 +39,14 @@ switch(arguments[0]) {
 
     case "compile": {
         const serve = arguments.includes("--serve");
-        compile(process.cwd(), serve);
+        const shouldWatch = arguments.includes("--watch");
+
+        let watch;
+        if(shouldWatch)
+            watch = arguments[arguments.indexOf("--watch") + 1] === "true";
+
+        console.log(watch);
+        compile(process.cwd(), serve, watch);
         break;
     }
 }

@@ -181,12 +181,11 @@ const createProject = (dname, proc, appName) => {
 
                             const package_raw = fs.readFileSync('package.json');
                             const package_json = JSON.parse(package_raw);
-                            const scripts = package_json.scripts;
-                            
-                            delete scripts.test;
-                            scripts.build = "npx stacks-cli compile";
 
-                            package_json.scripts = scripts;
+                            package_json.scripts = {
+                                "build" : "node /Users/sanjithudupa/Documents/Code/Experiments/StacksFramework/cli/src/stacks-cli.js compile --watch false",
+                                "serve" : "node /Users/sanjithudupa/Documents/Code/Experiments/StacksFramework/cli/src/stacks-cli.js compile --serve"
+                            };
 
                             fs.writeFileSync('package.json', JSON.stringify(package_json, null, 2));
                             console.log(chalk.blue("Scripts set!"));
