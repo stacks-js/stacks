@@ -25,7 +25,9 @@ const bundle = async (tmp, out, single, prod, cb) => {
             if(err)
                 error(`Error: Failed to delete ${chalk.bold(tmp)} directory! ${err}`);
             
-            if(single)
+            if(!single)
+                cb();
+            else
                 fs.mkdir(path.join(out, `${single}`), (err) => {
                     if(err)
                         error("Error: An error occured in the folder-process of compiling");

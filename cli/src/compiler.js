@@ -71,7 +71,7 @@ const compileFiles = (src, ext, out, final, shouldServe, prod) => {
 
         console.log(single)
         
-        files.forEach(file => {
+        for(let file of files) {
             const filePath = path.join(src, file);
             const isFile = fs.lstatSync(filePath).isFile();
 
@@ -110,7 +110,7 @@ const compileFiles = (src, ext, out, final, shouldServe, prod) => {
                     createPage(theseFiles, filePath, out);
                 });
             }
-        });
+        };
 
         setTimeout(() => {
             bundle(out, final, single, prod === "true", () => {
