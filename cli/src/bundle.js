@@ -6,6 +6,13 @@ const { error } = require('./utils');
 
 const bundle = async (tmp, out, single, prod, cb) => {
     const entryPoint = `${tmp}**/*.html`;
+    
+    //clear parcel cache
+    const cache = path.join(tmp, "../.cache");
+    console.log(cache)
+    
+    fs.rmSync(cache, { recursive: true, force: true});
+    
     // const outDir = path.join(dir, out)
     let outDir = out;
 

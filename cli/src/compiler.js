@@ -111,7 +111,7 @@ const compileFiles = (src, ext, out, final, shouldServe, prod) => {
                 });
             }
         };
-
+        
         setTimeout(() => {
             bundle(out, final, single, prod === "true", () => {
                 if(shouldServe)
