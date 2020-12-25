@@ -12,6 +12,7 @@ ncp.limit = 16;
 
 const templates = {};
 let firstPage;
+let single;
 
 const compile = async (dir, shouldServe, shouldWatch, prod) => {
     const packagejson = path.join(dir, "package.json");
@@ -60,9 +61,15 @@ const compile = async (dir, shouldServe, shouldWatch, prod) => {
 }
 
 const compileFiles = (src, ext, out, final, shouldServe, prod) => {
+    single = undefined;
     fs.readdir(src, async (err, files) => {
         if(err)
             error(`Error: Couldn't read project files`);
+
+        if(files.length === 1)
+            single = files[0].slice(0, -3);
+
+        console.log(single)
         
         files.forEach(file => {
             const filePath = path.join(src, file);
@@ -106,7 +113,7 @@ const compileFiles = (src, ext, out, final, shouldServe, prod) => {
         });
 
         setTimeout(() => {
-            bundle(out, final, prod === "true", () => {
+            bundle(out, final, single, prod === "true", () => {
                 if(shouldServe)
                     serve(final, 6969, firstPage);
                 });
@@ -117,13 +124,14 @@ const compileFiles = (src, ext, out, final, shouldServe, prod) => {
 }
 
 const createPage = async (files, src, out) => {
-    const main = files[0];
-    const name = main.slice(0, -3);
-    let htmlstr = templates.html.replace("{{ name }}", startCase(name)).replace("{{ view }}", main);
+    return new Promise((resolve, reject) => {
+        const main = files[0];
+        const name = main.slice(0, -3);
+        let htmlstr = templates.html.replace("{{ name }}", startCase(name)).replace("{{ view }}", main);
 
-    // importAssets(path.join(out, "../assets/"), htmlstr, src).then((html) => {
-    //     htmlstr = html;
-        
+        // importAssets(path.join(out, "../assets/"), htmlstr, src).then((html) => {
+        //     htmlstr = html;
+            
         if(files.length > 1) {
             // //there are more, so we need to reference the new scripts
             // const dom = new JSDOM(htmlstr);
@@ -140,6 +148,7 @@ const createPage = async (files, src, out) => {
         }
     
         const dir = path.join(out, `${name}/`);
+        console.log(chalk.bgGreen(dir));
         fs.mkdirSync(dir, { recursive: true });
     
         const pagePath = path.join(dir, `${name}.html`);
@@ -149,13 +158,20 @@ const createPage = async (files, src, out) => {
             firstPage = `${name}/${name}.html`;
     
         //copy other main file and others
-        files.forEach(file => {
-            ncp(path.join(src, file.toString()), path.join(dir, file.toString()), (err) => {
-                if(err)
-                    error(`Error: Failed to copy file ${chalk.bold(file)}`);
-            });
+        const iterator = new Promise((res, rej) => {
+            for(let file of files){
+                ncp(path.join(src, file.toString()), path.join(dir, file.toString()), (err) => {
+                    if(err)
+                        error(`Error: Failed to copy file ${chalk.bold(file)}`);
+                });
+            }
+
+            res();
         });
-    // });
+
+        iterator.then(resolve());
+        // });
+    });
 }
 
 const importAssets = (assets, html, dir, cb) => {
