@@ -14,6 +14,8 @@ const templates = {};
 let firstPage;
 let single;
 
+let ready = true;
+
 const compile = async (dir, shouldServe, shouldWatch, prod) => {
     const packagejson = path.join(dir, "package.json");
     const stacksconfig = path.join(dir, "stacks-config.json");
@@ -52,8 +54,12 @@ const compile = async (dir, shouldServe, shouldWatch, prod) => {
         const watcher = chokidar.watch(src, {persistent: true});
         watcher
             .on('change', _ => {
-                compileFiles(src, ext, out, final, false, prod);
-                console.log(chalk.green("Reloaded!"))
+                if(ready) {
+                    compileFiles(src, ext, out, final, false, prod);
+                    console.log(chalk.green("Reloaded!"));
+                } else {
+                    console.log(chalk.redBright("Please wait for the previous compile process to finish!"));
+                }
             });
 
         console.log(chalk.green("Watching for changes..."));
@@ -62,6 +68,8 @@ const compile = async (dir, shouldServe, shouldWatch, prod) => {
 
 const compileFiles = (src, ext, out, final, shouldServe, prod) => {
     single = undefined;
+    ready = false;
+    
     fs.readdir(src, async (err, files) => {
         if(err)
             error(`Error: Couldn't read project files`);
@@ -117,6 +125,8 @@ const compileFiles = (src, ext, out, final, shouldServe, prod) => {
                 if(shouldServe)
                     serve(final, 6969, firstPage);
                 });
+
+                ready = true;
             }
         , 250);
         // });
