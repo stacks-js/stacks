@@ -1,13 +1,5 @@
 #!/usr/bin/env node
 
-const chalk = require("chalk");
-const clear = require("clear");
-const figlet = require("figlet");
-const path = require("path");
-const program = require("commander");
-const { exit } = require("process");
-const fs = require("fs");
-
 const { error } = require("./utils");
 const { compile } = require("./compiler");
 
