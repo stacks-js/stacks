@@ -1,4 +1,4 @@
-export class Margin {
+export default class Margin {
     static min: string = "-10px";
     static default: string = "0px";
 

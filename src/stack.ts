@@ -1,7 +1,7 @@
-import { Block } from "./block.js"
-import { Margin } from './margin.js'
+import Block from "./block.js"
+import Margin from './margin.js'
 
-export class Stack extends Block{
+export default class Stack extends Block{
     blocks:Block[];
     type:StackType = "y";
     _margin:string = Margin.default;

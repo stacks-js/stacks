@@ -1,6 +1,6 @@
-import {Block} from "./block.js";
+import Block from "./block.js";
 
-export class StacksRenderer {
+export default class StacksRenderer {
     private static inst:StacksRenderer = null;
 
     static getInstance():StacksRenderer {

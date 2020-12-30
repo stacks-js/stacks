@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "watch": true,
+        "watch": false,
         "lib": ["dom", "esNext"],
         "rootDir": "src",
         "outDir": "dist",

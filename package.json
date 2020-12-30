@@ -2,13 +2,15 @@
   "name": "stacks-js",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/stacks.js",
+  "main": "out/stacks.min.js",
   "directories": {
     "main": "dist"
   },
   "scripts": {
     "css": "cp -a ./src/css/ ./dist/css/",
-    "build": "tsc && npm run css"
+    "compile": "tsc && npm run css",
+    "min": "webpack",
+    "build": "yarn run compile && yarn run min"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/sanjithudupa/stacks-js/issues"
   },
-  "homepage": "https://github.com/sanjithudupa/stacks-js#readme"
+  "homepage": "https://github.com/sanjithudupa/stacks-js#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.0"
+  }
 }

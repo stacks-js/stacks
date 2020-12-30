@@ -1,7 +1,7 @@
 import onChange from "./lib/onchange.js"
-import { StacksRenderer } from "./renderer.js"
+import StacksRenderer from "./renderer.js"
 
-export class Block {
+export default class Block {
     body: Function = null;
     object: HTMLElement;
     isLink: boolean = false;
@@ -146,7 +146,7 @@ export class Block {
         console.log("THIS STATFUCL" + this.params.stateful + " " + this.params.id)
 
         // if(this.params.stateful){
-        this.centered.id = this.constructor.name; 
+        this.centered.id = this.id; 
         //     StacksRenderer.getInstance().ids.push(this.constructor.name);
         //     StacksRenderer.getInstance().stateful.push(this);
         // }

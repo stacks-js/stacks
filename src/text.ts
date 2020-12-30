@@ -1,6 +1,6 @@
-import { Block } from "./block.js";
+import Block from "./block.js";
 
-export class Text extends Block {
+export default class Text extends Block {
     text:string;
     style:string = "p";
 
