@@ -33,16 +33,24 @@ export default class StacksRenderer {
         // console.log("YEYYY")
         // console.log(StacksRenderer.getInstance().stateful)
         // StacksRenderer.getInstance().stateful.forEach(block => {
-        const id:string = block.body().get().id;
+        const id:string = block.id;
         const old =  document.getElementById(id);
         const parent = old ? old.parentElement : document.body;
         const children = parent.childNodes;
-        
+
         children.forEach(child => {
             if(child === old){
-                console.log(parent.childNodes[0])
-                console.log(block.body().get())
-                parent.childNodes[0].replaceWith(block.body().get());
+                // console.log(parent.childNodes[0]);
+                // console.log(block.body().get());
+                const New = block.body().get();
+                child.childNodes.forEach(c => {
+                    const oldId = (<HTMLElement>c).id;
+                    console.log(oldId);
+
+                    New.id = oldId;
+                    
+                    c.replaceWith(New);
+                });
             }
         });
 

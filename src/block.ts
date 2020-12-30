@@ -24,6 +24,7 @@ export default class Block {
     updates = 0;
 
     states:ProxyConstructor = onChange({}, (t:Object, p:string) => {
+        console.warn(this.id)
         console.log(t[p] + ", " + p);
         if(this.updates > 0)
             StacksRenderer.getInstance().update(this/*this.get(this.params.wasView), this.constructor.name*/);
@@ -134,19 +135,18 @@ export default class Block {
         this.centered.style.justifyContent = "center";
         this.centered.style.alignItems = "center";
 
-        if(view) {
+        if(view)
             this.centered.style.height = window.innerHeight + "px";
-        }
-
-        let id = StacksRenderer.getInstance().generateId(this.constructor.name);
-        this.id = id; 
+        
+        
+        if(this.id === undefined)
+            this.id = StacksRenderer.getInstance().generateId(this.constructor.name);; 
 
         this.centered.appendChild(main);
 
-        console.log("THIS STATFUCL" + this.params.stateful + " " + this.params.id)
 
         // if(this.params.stateful){
-        this.centered.id = this.id; 
+        this.centered.id = this.id;
         //     StacksRenderer.getInstance().ids.push(this.constructor.name);
         //     StacksRenderer.getInstance().stateful.push(this);
         // }
