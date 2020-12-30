@@ -28,7 +28,7 @@ export default class StacksRenderer {
     }
 
     update(block : Block) {
-        console.trace("<h2>UPDATE</h2>")
+        // console.trace("<h2>UPDATE</h2>")
         // let count:number = 0;
         // console.log("YEYYY")
         // console.log(StacksRenderer.getInstance().stateful)
@@ -45,7 +45,7 @@ export default class StacksRenderer {
                 const New = block.body().get();
                 child.childNodes.forEach(c => {
                     const oldId = (<HTMLElement>c).id;
-                    console.log(oldId);
+                    // console.log(oldId);
 
                     New.id = oldId;
                     

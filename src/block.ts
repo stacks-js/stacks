@@ -24,8 +24,8 @@ export default class Block {
     updates = 0;
 
     states:ProxyConstructor = onChange({}, (t:Object, p:string) => {
-        console.warn(this.id)
-        console.log(t[p] + ", " + p);
+        // console.warn(this.id)
+        // console.log(t[p] + ", " + p);
         if(this.updates > 0)
             StacksRenderer.getInstance().update(this/*this.get(this.params.wasView), this.constructor.name*/);
         this.updates++;
@@ -84,7 +84,7 @@ export default class Block {
     }
 
     init() {
-        console.log("init block")
+        // console.log("init block")
     }
 
     getChild():HTMLElement {
@@ -99,8 +99,8 @@ export default class Block {
         // this.init();
         this.params.wasView = view ? view : false;
 
-        console.log("STATES")
-        console.log(this.states)
+        // console.log("STATES")
+        // console.log(this.states)
 
         let main:HTMLElement;
         if(this.params["tag"] != "div")
