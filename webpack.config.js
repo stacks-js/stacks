@@ -3,7 +3,7 @@ const path = require("path")
 module.exports = {
   entry: path.resolve(__dirname, "dist/stacks.js"),
   output: {
-    path: path.resolve(__dirname, "out"),
+    path: path.resolve(__dirname, "publish"),
     filename: "stacks.min.js",
     library: "Stacks",
     libraryTarget: "umd",
