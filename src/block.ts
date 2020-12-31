@@ -18,7 +18,8 @@ export default class Block {
         events: {},
         id: "",
         stateful: false,
-        wasView: false
+        wasView: false,
+        selfAlign: ""
     };
 
     updates = 0;
@@ -132,7 +133,14 @@ export default class Block {
         // let centered:HTMLElement;
         // centered = document.createElement("div");
         this.centered.style.display = "flex";
-        this.centered.style.justifyContent = "center";
+        
+        if(view)
+            this.centered.style.justifyContent = "center";
+        
+        if(this.params.selfAlign != "")
+            this.centered.style.alignSelf = this.params.selfAlign;
+        
+        // if(this.params)
         this.centered.style.alignItems = "center";
 
         if(view)

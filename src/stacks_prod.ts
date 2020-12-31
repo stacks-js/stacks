@@ -4,6 +4,7 @@ import Image from "./image.js";
 import Stack from "./stack.js";
 import StacksRenderer from "./renderer.js";
 import Margin from "./margin.js";
+import './css/stacks.css';
 // const Utils = {
 //     Margin
 // }

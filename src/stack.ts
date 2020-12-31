@@ -3,13 +3,14 @@ import Margin from './margin.js'
 
 export default class Stack extends Block{
     blocks:Block[];
+    children:HTMLElement[] = [];
     type:StackType = "y";
     _margin:string = Margin.default;
 
     constructor(type:StackType, ...blocks: Block[]) {
         super();
         this.blocks = blocks;
-        this.params["stack"] = false;
+        this.params.stack = true;
         this.type = type;
 
         let stackObject = document.createElement("div");
@@ -18,16 +19,38 @@ export default class Stack extends Block{
             this.blocks = blocks.reverse();
 
         for(let block in blocks) {
+            blocks[block].params.selfAlign = "center";
+
             let body:HTMLElement = blocks[block].get();
             // body.classList.add("child");
             // body.style.setProperty("--margin", this._margin);
             body.style.margin = this._margin;
+            this.children.push(body);
             stackObject.appendChild(body);
         }
 
         stackObject.className = type + "stack";
 
         this.object = stackObject;
+    }
+
+    align(alignment:AlignType) {
+        let align:string;
+
+        if(alignment == "left")
+            align = "flex-start";
+        else if(alignment == "right")
+            align = "flex-end";
+        else
+            align = alignment;
+        
+        console.log(`Aligning to ${align}`);
+        
+        for(let child in this.children){
+            this.children[child].style.alignSelf = align;
+        }
+        
+        return this;
     }
 
     margin(margin:string) {
@@ -43,3 +66,5 @@ export default class Stack extends Block{
 }
 
 export type StackType = "x" | "y" | "z";
+
+export type AlignType = "center" | "left" | "right";
