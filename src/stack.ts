@@ -37,9 +37,9 @@ export default class Stack extends Block{
     align(alignment:AlignType) {
         let align:string;
 
-        if(alignment == "left")
+        if(alignment == "left" || alignment == "top")
             align = "flex-start";
-        else if(alignment == "right")
+        else if(alignment == "right" || alignment == "bottom")
             align = "flex-end";
         else
             align = alignment;
@@ -67,4 +67,4 @@ export default class Stack extends Block{
 
 export type StackType = "x" | "y" | "z";
 
-export type AlignType = "center" | "left" | "right";
+export type AlignType = "center" | "left" | "right" | "top" | "bottom";
