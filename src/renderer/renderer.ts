@@ -1,4 +1,4 @@
-import Block from "./block.js";
+import Block from "../blocks/block.js";
 
 export default class StacksRenderer {
     private static inst:StacksRenderer = null;

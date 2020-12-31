@@ -7,7 +7,7 @@
  *  - Stacks - DONE
  *  - Image - DONE
  *  - Text - DONE
- *  - Modifiers(scale, opacity, etc)
+ *  - Modifiers(scale, opacity, etc) - DONE
  */
 class Subview extends Block {
     body = () => {

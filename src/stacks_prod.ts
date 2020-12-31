@@ -1,9 +1,9 @@
-import Block from "./block.js";
-import Text from "./text.js";
-import Image from "./image.js";
-import Stack from "./stack.js";
-import StacksRenderer from "./renderer.js";
-import Margin from "./margin.js";
+import Block from "./blocks/block.js";
+import Text from "./blocks/text.js";
+import Image from "./blocks/image.js";
+import Stack from "./blocks/stack.js";
+import StacksRenderer from "./renderer/renderer.js";
+import Margin from "./utils/margin.js";
 import './css/stacks.css';
 // const Utils = {
 //     Margin

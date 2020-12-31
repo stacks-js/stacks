@@ -1,5 +1,5 @@
-import onChange from "./lib/onchange.js"
-import StacksRenderer from "./renderer.js"
+import onChange from "../lib/onchange.js"
+import StacksRenderer from "../renderer/renderer.js"
 
 export default class Block {
     body: Function = null;
