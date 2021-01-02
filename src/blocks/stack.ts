@@ -6,6 +6,7 @@ export default class Stack extends Block{
     children:HTMLElement[] = [];
     type:StackType = "y";
     _margin:string = Margin.default;
+    alignment:string = "flex-start";
 
     constructor(type:StackType, ...blocks: Block[]) {
         super();
@@ -43,11 +44,11 @@ export default class Stack extends Block{
             align = "flex-end";
         else
             align = alignment;
-        
-        console.log(`Aligning to ${align}`);
+
+        this.alignment = align;
         
         for(let child in this.children){
-            this.children[child].style.alignSelf = align;
+            this.children[child].style.alignSelf = this.alignment;
         }
         
         return this;

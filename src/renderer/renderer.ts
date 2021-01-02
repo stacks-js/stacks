@@ -1,4 +1,5 @@
 import Block from "../blocks/block.js";
+import { center } from "./render-utils.js";
 
 export default class StacksRenderer {
     private static inst:StacksRenderer = null;
@@ -13,17 +14,30 @@ export default class StacksRenderer {
     stateful: Block[] = [];
     ids: string[] = [];
     elemcount:number = -1;
+    centered: HTMLElement[] = [];
 
 
     render(block : Block): void{
         let body:HTMLElement = block.get(true);
     
         document.body.appendChild(body);
-
+        
+        if(block.params.centered)
+            body.style.height = window.innerHeight + "px";
+        // if(block.params.centered)
+        // if(body.children[0].getAttribute("centered"))
+        //     center(body);
+        
         // console.log(this.watching)
         
         window.onresize = () => {
-            body.style.height = window.innerHeight.toString() + "px";
+            if(block.params.centered)
+                body.style.height = window.innerHeight + "px";
+            // for(let block in StacksRenderer.getInstance().centered) {
+            //     let body = StacksRenderer.getInstance().centered[block];
+            //     body.style.height = window.innerHeight.toString() + "px";
+            //     console.log(body)
+            // }
         }
     }
 

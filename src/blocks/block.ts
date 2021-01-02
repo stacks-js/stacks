@@ -14,12 +14,15 @@ export default class Block {
         text: false,
         stack: false,
         style: {},
+        mainStyle: {},
+        attributes: {},
         childStyle: {},
         events: {},
         id: "",
         stateful: false,
         wasView: false,
-        selfAlign: ""
+        selfAlign: "",
+        centered: false
     };
 
     updates = 0;
@@ -84,6 +87,36 @@ export default class Block {
         return this;
     }
 
+    center() {
+        this.params.centered = true;
+        this.params.mainStyle["margin"] = "auto";
+        // StacksRenderer.getInstance().centered.push(this.getParent());
+        // this.params.mainStyle["alignSelf"] = "center";
+        // this.params.mainStyle["justifySelf"] = "center";
+
+        return this;
+    }
+
+    getParent() {
+        const id:string = this.centered.id;
+        const old =  document.getElementById(id);
+        const parent = old ? old.parentElement : document.body;
+
+        return parent;
+        // const children = parent.childNodes;
+
+        // children.forEach(child => {
+        //     if(child === old){
+        //         // console.log(parent.childNodes[0]);
+        //         // console.log(block.body().get());
+        //         child.childNodes.forEach(c => {
+        //             const oldId = (<HTMLElement>c).id;
+
+        //         });
+        //     }
+        // });
+    }
+
     init() {
         // console.log("init block")
     }
@@ -134,8 +167,7 @@ export default class Block {
         // centered = document.createElement("div");
         this.centered.style.display = "flex";
         
-        if(view)
-            this.centered.style.justifyContent = "center";
+
         
         if(this.params.selfAlign != "")
             this.centered.style.alignSelf = this.params.selfAlign;
@@ -143,16 +175,17 @@ export default class Block {
         // if(this.params)
         this.centered.style.alignItems = "center";
 
-        if(view)
-            this.centered.style.height = window.innerHeight + "px";
+        // if(view)
+        //     this.centered.style.height = window.innerHeight + "px";
         
         
         if(this.id === undefined)
             this.id = StacksRenderer.getInstance().generateId(this.constructor.name);; 
 
         this.centered.appendChild(main);
-
-
+        
+        // if(this.params.centered)
+            // console.log(this.centered)
         // if(this.params.stateful){
         this.centered.id = this.id;
         //     StacksRenderer.getInstance().ids.push(this.constructor.name);
@@ -164,7 +197,17 @@ export default class Block {
         //     StacksRenderer.getInstance().watching[id] = centered;
         // }
 
-        this.centered.setAttribute("stateful", this.params.stateful + "")
+        this.params.attributes["stateful"] = this.params.stateful + "";
+        this.params.attributes["centered"] = this.params.centered + "";
+
+        for(let style in this.params.mainStyle) {
+            this.centered.style[style] = this.params.mainStyle[style];
+        }
+
+        for(let attribute in this.params.attributes) {
+            this.centered.setAttribute(attribute, this.params.attributes[attribute]);
+        }
+
         this.object = this.centered;
         return this.centered;
     }
