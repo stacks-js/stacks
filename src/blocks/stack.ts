@@ -20,7 +20,7 @@ export default class Stack extends Block{
             this.blocks = blocks.reverse();
 
         for(let block in blocks) {
-            blocks[block].params.selfAlign = "center";
+            blocks[block].params.selfAlign = this.alignment;
 
             let body:HTMLElement = blocks[block].get();
             // body.classList.add("child");
@@ -47,11 +47,15 @@ export default class Stack extends Block{
 
         this.alignment = align;
         
+        this.applyAlignment();
+
+        return this;
+    }
+
+    applyAlignment() {
         for(let child in this.children){
             this.children[child].style.alignSelf = this.alignment;
         }
-        
-        return this;
     }
 
     margin(margin:string) {
