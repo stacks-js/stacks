@@ -90,7 +90,6 @@ export default class Block {
     center() {
         this.params.centered = true;
         this.params.mainStyle["margin"] = "auto";
-        // StacksRenderer.getInstance().centered.push(this.getParent());
         // this.params.mainStyle["alignSelf"] = "center";
         // this.params.mainStyle["justifySelf"] = "center";
 
@@ -167,7 +166,6 @@ export default class Block {
         // centered = document.createElement("div");
         this.centered.style.display = "flex";
         
-
         
         if(this.params.selfAlign != "")
             this.centered.style.alignSelf = this.params.selfAlign;
@@ -196,6 +194,9 @@ export default class Block {
         //     centered.id = id;
         //     StacksRenderer.getInstance().watching[id] = centered;
         // }
+
+        if(this.params.centered)
+            StacksRenderer.getInstance().centered.push(this.centered.id);
 
         this.params.attributes["stateful"] = this.params.stateful + "";
         this.params.attributes["centered"] = this.params.centered + "";
