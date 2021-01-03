@@ -4,6 +4,7 @@ import Image from "./blocks/regular/image.js";
 import Stack from "./blocks/regular/stack.js";
 import StacksRenderer from "./renderer/renderer.js";
 import TextField from "./blocks/input/textfield.js";
+import Button from "./blocks/input/button.js";
 import Margin from "./utils/margin.js";
 // const Utils = {
 //     Margin
@@ -30,6 +31,7 @@ export {
     Image,
     Stack,
     StacksRenderer,
-    TextField
+    TextField,
+    Button
     // Utils
 }
