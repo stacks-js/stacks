@@ -1,5 +1,5 @@
-import Block from "./block.js"
-import Margin from '../utils/margin.js'
+import Block from "../block.js"
+import Margin from '../../utils/margin.js'
 
 export default class Stack extends Block{
     blocks:Block[];

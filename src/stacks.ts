@@ -1,7 +1,7 @@
 import Block from "./blocks/block.js";
-import Text from "./blocks/text.js";
-import Image from "./blocks/image.js";
-import Stack from "./blocks/stack.js";
+import Text from "./blocks/regular/text.js";
+import Image from "./blocks/regular/image.js";
+import Stack from "./blocks/regular/stack.js";
 import StacksRenderer from "./renderer/renderer.js";
 import Margin from "./utils/margin.js";
 // const Utils = {

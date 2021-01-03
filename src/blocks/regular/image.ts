@@ -1,4 +1,4 @@
-import Block from "./block.js";
+import Block from "../block.js";
 
 export default class Image extends Block {
     path:string;
