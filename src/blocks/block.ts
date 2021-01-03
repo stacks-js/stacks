@@ -170,7 +170,6 @@ export default class Block {
 
         if(this.params.text)
             this.centered = main;
-        console.log(this.centered)
         // let centered:HTMLElement;
         // centered = document.createElement("div");
         this.centered.style.display = "flex";

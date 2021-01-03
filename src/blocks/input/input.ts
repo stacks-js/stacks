@@ -1,13 +1,26 @@
 import Block from "../block.js";
 
 export default class Input<T> extends Block {
-    value:T;
+    value:string;
     type:string;
     tag:string = "input";
     place:string;
 
+    onInput(input:Function) {
+        const oninput = (e:Event) => {
+            input(this.value, e)
+        }
+
+        this.params.events["input"] = oninput;
+        return this;
+    }
+
     onChange(change:Function) {
-        this.params.events["change"] = change;
+        const onchange = (e:Event) => {
+            change(this.value, e)
+        }
+
+        this.params.events["change"] = onchange;
         return this;
     }
 
@@ -27,6 +40,12 @@ export default class Input<T> extends Block {
         this.params["input"] = true;
         
         let inputElement = document.createElement(this.tag);
+        inputElement.setAttribute("type", type);
+
+        inputElement.addEventListener("input", (e) => {
+            this.value = (<HTMLTextAreaElement>e.target).value;
+        });
+
         this.object = inputElement;
     }
 }
