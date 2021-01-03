@@ -12,6 +12,7 @@ export default class Block {
         tag: "div",
         isLink: false,
         text: false,
+        input: false,
         stack: false,
         style: {},
         mainStyle: {},
@@ -64,17 +65,22 @@ export default class Block {
         return this;
     }
 
-    setStyleAttribute(name:string,value:string) {
+    setStyleAttribute(name:string, value:string) {
         this.params.style[name] = value;
         return this;
     }
 
-    setChildStyle(name:string,value:string) {
+    setChildStyle(name:string, value:string) {
         this.params.childStyle[name] = value;
         return this;
     }
 
-    onclick(click:Function) {
+    setAttribute(name:string, value:string) {
+        this.params.attributes[name] = value;
+        return this;
+    }
+
+    onClick(click:Function) {
         this.params.events["click"] = click;
         return this;
     }
