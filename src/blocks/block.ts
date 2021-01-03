@@ -168,6 +168,9 @@ export default class Block {
             main.addEventListener(event, this.params.events[event]);
         }
 
+        if(this.params.text)
+            this.centered = main;
+        console.log(this.centered)
         // let centered:HTMLElement;
         // centered = document.createElement("div");
         this.centered.style.display = "flex";
@@ -186,7 +189,8 @@ export default class Block {
         if(this.id === undefined)
             this.id = StacksRenderer.getInstance().generateId(this.constructor.name);; 
 
-        this.centered.appendChild(main);
+        if(!this.params.text)
+            this.centered.appendChild(main);
         
         // if(this.params.centered)
             // console.log(this.centered)
