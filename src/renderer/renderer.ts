@@ -57,17 +57,17 @@ export default class StacksRenderer {
 
         children.forEach(child => {
             if(child === old){
-                // console.log(parent.childNodes[0]);
-                // console.log(block.body().get());
                 const New = block.body().get();
-                child.childNodes.forEach(c => {
-                    const oldId = (<HTMLElement>c).id;
-                    // console.log(oldId);
+                const Old = <HTMLElement>child.childNodes[0];
 
-                    New.id = oldId;
-                    
-                    c.replaceWith(New);
-                });
+                // console.log(New);
+                // console.log(Old);
+
+                const oldId = Old.id; 
+
+                New.id = oldId;
+                // Old.replaceWith(New);
+                this.replaceElement(New, Old);
             }
         });
 
@@ -102,6 +102,37 @@ export default class StacksRenderer {
         // document.body.replaceChild(document.getElementById(id).parentNode, elem)
 
         // console.log("HELLO")
+    }
+
+    replaceElement(New:HTMLElement, Old:HTMLElement) {
+        if(New.outerHTML === Old.outerHTML)
+            return;
+        
+        let count = 0;
+        New.childNodes.forEach(c => {
+            let newChild:HTMLElement = <HTMLElement> c;
+            let oldChild:HTMLElement = <HTMLElement> Old.childNodes[count];
+            // console.log(newChild)
+            if(!oldChild || oldChild.nodeType != 1){
+                this.resetNodeValue(New, Old, Old.parentElement);
+            }
+            else {
+                if(newChild.outerHTML != oldChild.outerHTML) {
+                    this.replaceElement(newChild, oldChild);
+                    // console.log(newChild.toString() + ", " + oldChild.toString())
+                }else {
+                    // console.log(newChild);
+                }
+            }
+
+            count++;
+        });
+    }
+
+    resetNodeValue(New:HTMLElement, Old:HTMLElement, Parent:HTMLElement) {
+        const id = Old.id;
+        New.id = id;
+        Parent.replaceChild(New, Old);
     }
 
     generateId(block?:string): string {
