@@ -5,6 +5,7 @@ import Stack from "./blocks/regular/stack.js";
 import StacksRenderer from "./renderer/renderer.js";
 import TextField from "./blocks/input/textfield.js";
 import Button from "./blocks/input/button.js";
+import Bind from "./lib/internal/bind.js";
 import Margin from "./utils/margin.js";
 // const Utils = {
 //     Margin
@@ -32,6 +33,7 @@ export {
     Stack,
     StacksRenderer,
     TextField,
-    Button
+    Button,
+    Bind
     // Utils
 }
