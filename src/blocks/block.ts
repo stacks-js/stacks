@@ -1,4 +1,4 @@
-import onChange from "../lib/onchange.js"
+import onChange from "../lib/external/onchange.js"
 import StacksRenderer from "../renderer/renderer.js"
 
 export default class Block {
