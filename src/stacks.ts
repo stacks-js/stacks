@@ -7,6 +7,7 @@ import TextField from "./blocks/input/textfield.js";
 import Button from "./blocks/input/button.js";
 import Bind from "./lib/internal/bind.js";
 import Margin from "./utils/margin.js";
+import "./utils/bind.js";
 // const Utils = {
 //     Margin
 // }
