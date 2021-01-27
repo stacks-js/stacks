@@ -5,6 +5,7 @@ export default class Input<T> extends Block {
     type:string;
     tag:string = "input";
     place:string;
+    inputElement:HTMLElement;
 
     onInput(input:Function) {
         const oninput = (e:Event) => {
@@ -34,18 +35,26 @@ export default class Input<T> extends Block {
         return this;
     }
 
-    constructor(type:string){
+    setType = (type:string) => {
+        this.type = type;
+        this.inputElement.setAttribute("type", type);
+    }
+
+    constructor(type:string, bindUp?:Function){
         super();
         this.type = type;
         this.params["input"] = true;
         
-        let inputElement = document.createElement(this.tag);
-        inputElement.setAttribute("type", type);
+        this.inputElement = document.createElement(this.tag);
+        this.inputElement.setAttribute("type", type);
 
-        inputElement.addEventListener("input", (e) => {
+        this.inputElement.addEventListener("input", (e) => {
             this.value = (<HTMLTextAreaElement>e.target).value;
+            
+            if(bindUp)
+                bindUp();
         });
 
-        this.object = inputElement;
+        this.object = this.inputElement;
     }
 }

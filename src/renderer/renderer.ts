@@ -117,11 +117,11 @@ export default class StacksRenderer {
                 this.resetNodeValue(New, Old, Old.parentElement);
             }
             else {
-                if(newChild.outerHTML != oldChild.outerHTML) {
+                let inners = newChild.innerHTML != oldChild.innerHTML;
+                let attrs = newChild.attributes.length != oldChild.attributes.length;
+                console.log(attrs);
+                if(inners || (attrs && inners)) {
                     this.replaceElement(newChild, oldChild);
-                    // console.log(newChild.toString() + ", " + oldChild.toString())
-                }else {
-                    // console.log(newChild);
                 }
             }
 

@@ -21,4 +21,10 @@ export default class Button extends Block {
 
         this.object = buttonObject;
     }
+
+    // enabled(enabled:boolean) {
+    //     this.object.setAttribute("disabled", (!enabled).toString());
+
+    //     return this;
+    // }
 }

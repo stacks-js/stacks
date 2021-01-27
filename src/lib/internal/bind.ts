@@ -1,4 +1,4 @@
-export default function Bind(variable) {
-    console.log(variable.parent);
-    return variable;
+export default interface Bind {
+    states: ProxyConstructor,
+    val: any
 }
