@@ -5,6 +5,7 @@ export default class Block {
     body: Function = null;
     object: HTMLElement;
     isLink: boolean = false;
+    boundAttributes: any[] = [];
 
     id:string;
 
@@ -31,12 +32,23 @@ export default class Block {
     states:ProxyConstructor = onChange({}, (t:Object, p:string) => {
         // console.warn(this.id)
         // console.log(t[p] + ", " + p);
+        this.boundAttributes.forEach((bound) => {
+            const boundBlock:Block = bound[0];
+            const prop = bound[1];
+
+            boundBlock.states[prop] = this.states[prop]; 
+        });
+
         if(this.updates > 0)
             StacksRenderer.getInstance().update(this/*this.get(this.params.wasView), this.constructor.name*/);
         this.updates++;
     })
 
     centered:HTMLElement = document.createElement("div");
+
+    attachBoundAttribute(bound: any) {
+        this.boundAttributes.push(bound);
+    }
 
     link(href:string) {
         this.isLink = true;

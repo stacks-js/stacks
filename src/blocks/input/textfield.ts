@@ -2,8 +2,11 @@ import Bind from "../../lib/internal/bind.js";
 import Input from "./input.js";
 
 export default class TextField extends Input<string> {
-    constructor(val?:Bind, type?:TextFieldType) {
-        super(type ? type : "text", () => { if(val) {val.states[val.val] = this.value} });
+    value:string;
+
+    constructor(key:Array<string>, type?:TextFieldType) {
+        super(type ? type : "text");
+        Bind(key, this);
     }
 
     textFieldType(type:TextFieldType) {

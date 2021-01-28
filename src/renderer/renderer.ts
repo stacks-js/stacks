@@ -119,7 +119,7 @@ export default class StacksRenderer {
             else {
                 let inners = newChild.innerHTML != oldChild.innerHTML;
                 let attrs = newChild.attributes.length != oldChild.attributes.length;
-                console.log(attrs);
+                // console.log(attrs);
                 if(inners || (attrs && inners)) {
                     this.replaceElement(newChild, oldChild);
                 }
