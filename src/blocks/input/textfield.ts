@@ -4,9 +4,13 @@ import Input from "./input.js";
 export default class TextField extends Input<string> {
     value:string;
 
-    constructor(key:Array<string>, type?:TextFieldType) {
-        super(type ? type : "text");
-        Bind(key, this);
+    constructor(key:Array<any>, type?:TextFieldType, placeholder?:string) {
+        super(key, type ? type : "text", (input: string) => {
+            return input;
+        });
+        
+        if(placeholder)
+            this.params.attributes["placeholder"] = placeholder;
     }
 
     textFieldType(type:TextFieldType) {

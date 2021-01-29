@@ -1,7 +1,9 @@
+import Bind from "../../lib/internal/bind.js";
 import Block from "../block.js";
 
 export default class Input<T> extends Block {
-    value:string;
+    value:T;
+    valueKey:string;
     type:string;
     tag:string = "input";
     place:string;
@@ -40,7 +42,7 @@ export default class Input<T> extends Block {
         this.inputElement.setAttribute("type", type);
     }
 
-    constructor(type:string, bindUp?:Function){
+    constructor(key: Array<any>, type:string, convertType:Function){
         super();
         this.type = type;
         this.params["input"] = true;
@@ -48,13 +50,15 @@ export default class Input<T> extends Block {
         this.inputElement = document.createElement(this.tag);
         this.inputElement.setAttribute("type", type);
 
+        // if(!this.states[key[1]])
+        //     this.states[key[1]] = key[0].states[key[1]];
+
         this.inputElement.addEventListener("input", (e) => {
-            this.value = (<HTMLTextAreaElement>e.target).value;
-            
-            if(bindUp)
-                bindUp();
+            this.value = convertType((<HTMLTextAreaElement>e.target).value);
+            key[0].states[key[1]] = this.value;
         });
 
         this.object = this.inputElement;
+        Bind(key, this);
     }
 }
