@@ -1,4 +1,4 @@
-import { Block } from "../../stacks";
+import Block from "../../blocks/block.js";
 
 //bound object has main block, block has og block
 const Bind = (boundObject: Array<any>, block: Block) => {

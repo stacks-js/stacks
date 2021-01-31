@@ -1,18 +1,24 @@
 import Block from "../block.js";
 
-// export default class If extends Block {
-//     condition:Boolean;
-//     style:string = "p";
+export default class IfBlock extends Block {
+    condition:boolean;
 
-//     constructor(text:string, style?:string){
-//         super();
-//         this.text = text;
-//         this.params["text"] = true;
-//         if(style)
-//             this.style = style
+    static If(condition:boolean):IfBlock {
+        return new IfBlock(condition);
+    }
+
+    constructor(condition:boolean){
+        super();
+        this.condition = condition;
+    }
+
+    then(block:Block) {
         
-//         let textElement = document.createElement(style ? style : "p");
-//         textElement.innerText = text;
-//         this.object = textElement;
-//     }
-// }
+        return this;
+    }
+
+    else(block:Block) {
+        
+        return this;
+    }
+}

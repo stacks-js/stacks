@@ -37,7 +37,7 @@ export default class Input<T> extends Block {
         return this;
     }
 
-    setType = (type:string) => {
+    setType(type:string) {
         this.type = type;
         this.inputElement.setAttribute("type", type);
     }
