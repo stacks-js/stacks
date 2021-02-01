@@ -23,3 +23,15 @@ export const centerBlocks = (blocks:string[]) => {
         parent.style.height = newHeight;
     }
 }
+
+export const getParentBlockElement = (id: string, cb:Function) => {
+    const old =  document.getElementById(id);
+    const parent = old ? old.parentElement : document.body;
+    const children = parent.childNodes;
+
+    children.forEach(child => {
+        if(child === old){
+            cb(child);
+        }
+    });
+}

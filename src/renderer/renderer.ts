@@ -1,5 +1,5 @@
 import Block from "../blocks/block.js";
-import { centerBlocks } from "./render-utils.js";
+import { centerBlocks, getParentBlockElement } from "./render-utils.js";
 
 export default class StacksRenderer {
     private static inst:StacksRenderer = null;
@@ -50,26 +50,27 @@ export default class StacksRenderer {
         // console.log("YEYYY")
         // console.log(StacksRenderer.getInstance().stateful)
         // StacksRenderer.getInstance().stateful.forEach(block => {
-        const id:string = block.id;
-        const old =  document.getElementById(id);
-        const parent = old ? old.parentElement : document.body;
-        const children = parent.childNodes;
+        
 
-        children.forEach(child => {
-            if(child === old){
-                const New = block.body().get();
-                const Old = <HTMLElement>child.childNodes[0];
+        // children.forEach(child => {
+        //     if(child === old){
+        getParentBlockElement(block.id, (parent) => {
+            const New = block.body().get();
+            const Old = <HTMLElement>parent.childNodes[0];
 
-                // console.log(New);
-                // console.log(Old);
+            // console.log(New);
+            // console.log(Old);
 
-                const oldId = Old.id; 
+            const oldId = Old.id; 
 
-                New.id = oldId;
-                // Old.replaceWith(New);
-                this.replaceElement(New, Old);
-            }
+            New.id = oldId;
+            // Old.replaceWith(New);
+            this.replaceElement(New, Old);
         });
+
+        
+        //     }
+        // });
 
         // parent.replaceChild(old, document.createElement("p"));
 

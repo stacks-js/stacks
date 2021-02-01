@@ -1,5 +1,7 @@
 import Bind from "../../lib/internal/bind.js";
 import Block from "../block.js";
+import { camelCase } from "../../utils/string-utils.js";
+import { getParentBlockElement } from "../../renderer/render-utils.js";
 
 export default class Input<T> extends Block {
     value:T;
@@ -8,6 +10,7 @@ export default class Input<T> extends Block {
     tag:string = "input";
     place:string;
     inputElement:HTMLElement;
+    labelElement:HTMLElement;
 
     onInput(input:Function) {
         const oninput = (e:Event) => {
@@ -46,6 +49,17 @@ export default class Input<T> extends Block {
         this.value = value;
     }
 
+    label(label:string) {
+        const id = camelCase(label);
+        
+        this.inputElement.id = id;
+
+        this.labelElement.innerText = label;
+        this.labelElement.setAttribute("for", id);
+
+        return this;
+    }
+
     constructor(key: Array<any>, type:string, convertType:Function){
         super();
         this.type = type;
@@ -62,7 +76,13 @@ export default class Input<T> extends Block {
             key[0].states[key[1]] = this.value;
         });
 
-        this.object = this.inputElement;
+        this.labelElement = document.createElement("label");
+        
+        const inputFull = document.createElement("div");
+        inputFull.appendChild(this.labelElement)
+        inputFull.appendChild(this.inputElement)
+
+        this.object = inputFull;
         Bind(key, this);
     }
 }
