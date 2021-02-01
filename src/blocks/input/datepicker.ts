@@ -9,4 +9,14 @@ export default class DatePicker extends Input<Date> {
 
         this.params.attributes["placeholder"] = placeholder || "yyyy-mm-dd";
     }
+
+    max(date:Date) {
+        this.setAttribute("max", date.toISOString());
+        return this;
+    }
+
+    min(date:Date) {
+        this.setAttribute("min", date.toISOString());
+        return this;
+    }
 }
