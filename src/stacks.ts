@@ -7,6 +7,7 @@ import TextField from "./blocks/input/textfield.js";
 import Button from "./blocks/input/button.js";
 import Spacer from "./blocks/util/spacer.js";
 import NumberField from "./blocks/input/numberfield.js";
+import ColorPicker from "./blocks/input/colorpicker.js";
 import "./utils/binding.js";
 // const Utils = {
 //     Margin
@@ -36,6 +37,7 @@ export {
     TextField,
     Button,
     Spacer,
-    NumberField
+    NumberField,
+    ColorPicker
     // Utils
 }

@@ -42,6 +42,10 @@ export default class Input<T> extends Block {
         this.inputElement.setAttribute("type", type);
     }
 
+    default(value:T) {
+        this.value = value;
+    }
+
     constructor(key: Array<any>, type:string, convertType:Function){
         super();
         this.type = type;
