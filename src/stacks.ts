@@ -9,6 +9,7 @@ import Spacer from "./blocks/util/spacer.js";
 import NumberField from "./blocks/input/numberfield.js";
 import ColorPicker from "./blocks/input/colorpicker.js";
 import DatePicker from "./blocks/input/datepicker.js";
+import FileUpload from "./blocks/input/fileupload.js";
 import "./utils/binding.js";
 // const Utils = {
 //     Margin
@@ -40,6 +41,7 @@ export {
     Spacer,
     NumberField,
     ColorPicker,
-    DatePicker
+    DatePicker,
+    FileUpload
     // Utils
 }
