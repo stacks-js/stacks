@@ -1,11 +1,8 @@
-import Bind from "../../lib/internal/bind.js";
 import Input from "./input.js";
 
 export default class TextField extends Input<string> {
-    value:string;
-
     constructor(key:Array<any>, type?:TextFieldType, placeholder?:string) {
-        super(key, type ? type : "text", (input: string) => {
+        super(key, type ? type : "text", (input: string):string => {
             return input;
         });
         
