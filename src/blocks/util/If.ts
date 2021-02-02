@@ -1,5 +1,8 @@
 import Block from "../block.js";
 
+/**
+ * @ignore
+ */
 export default class IfBlock extends Block {
     condition:boolean;
 

@@ -1,13 +1,40 @@
 import Block from "../block.js"
 import Margin from '../../utils/margin.js'
 
+/**
+ * A very important block. This allows you to combine multiple other blocks together and arrange them in an easy way.
+ * ```javascript
+ *  new Stack("y",
+ *      new Image("https://www.google.com/favicon.ico"),
+ *      new Text("Google Logo")
+ *  );
+ * ```
+ */
 export default class Stack extends Block{
+    /**
+     * The blocks that are contained within the Stack
+     */
     blocks:Block[];
+    
+    /**
+     * @internal The children of the block as HTML Elements
+     */
     children:HTMLElement[] = [];
+
+    /**
+     * The direction the stack should be aligned with
+     */
     type:StackType = "y";
+
     _margin:string = Margin.default;
+
     alignment:string = "flex-start";
 
+    /**
+     * Creates a Stack with the given blocks
+     * @param type The way the blocks should be stacked, vertically(along the **y** axis), horizontally(along the **x** axis), or on top of one another(along the **z** axis)
+     * @param blocks A list of blocks to put inside the stack. New blocks are accepted as new parameters, there is no need to pass it as an array. See the example above for more details. 
+     */
     constructor(type:StackType, ...blocks: Block[]) {
         super();
         this.blocks = blocks;
@@ -35,6 +62,10 @@ export default class Stack extends Block{
         this.object = stackObject;
     }
 
+    /**
+     * Aligns the contents of the stack in along a certain axis. See [[AlignType]].
+     * @param alignment The place it should be aligned, either center, left, or right for X Stacks or top, center, bottom for Y Stacks. 
+     */
     align(alignment:AlignType) {
         let align:string;
 
@@ -52,12 +83,19 @@ export default class Stack extends Block{
         return this;
     }
 
+    /**
+     * @internal
+     */
     applyAlignment() {
         for(let child in this.children){
             this.children[child].style.alignSelf = this.alignment;
         }
     }
 
+    /**
+     * Add a margin around a stack as a whole to adjust the spacing within the stack.
+     * @param margin The spacing between individual blocks in the stack. 
+     */
     margin(margin:string) {
         this._margin = margin;
 
@@ -70,6 +108,27 @@ export default class Stack extends Block{
     }
 }
 
+/**
+ * This determines how a stack will be laid out. 
+ * 
+ * XStack = Horizontal
+ * YStack = Vertical
+ * ZStack = On top of another
+ * 
+ * If you would like to combine multiple axes together, that is done by simply using a Stack within a Stack. After all, Stacks are still blocks and can therefore be included in another Stack like below:
+ * ```javascript
+ * new Stack("y",
+ *  new Text("Below me is my X Stack!"),
+ *  new Stack("x",
+ *      new Text("I am on the left!"),
+ *      new Text("And I am on the righ!")
+ *  ).margin("10px")
+ * )
+ * ```
+ */
 export type StackType = "x" | "y" | "z";
 
+/**
+ * The way contents of the Stack should be aligned together. Works for both X and Y stacks.
+ */
 export type AlignType = "center" | "left" | "right" | "top" | "bottom";
