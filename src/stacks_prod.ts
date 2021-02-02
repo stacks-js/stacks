@@ -1,3 +1,7 @@
+/**
+ * Production version of Stacks. This is used when bundling with [Webpack](https://webpack.js.org) to include css styles. 
+ */
+
 import Block from "./blocks/block.js";
 import Text from "./blocks/regular/text.js";
 import Image from "./blocks/regular/image.js";

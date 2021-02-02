@@ -1,3 +1,7 @@
+/**
+ * Stacks Entrypoint
+ */
+
 import Block from "./blocks/block.js";
 import Text from "./blocks/regular/text.js";
 import Image from "./blocks/regular/image.js";
@@ -29,7 +33,9 @@ import "./utils/binding.js";
 // const Stack = function(type, ...blocks) {
 //     return new stack(type, ...blocks);
 // }
-
+/**
+ * Library stuff
+ */
 export {
     Block,
     Text,
