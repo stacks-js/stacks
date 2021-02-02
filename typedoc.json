@@ -1,0 +1,5 @@
+{
+    "entryPoints": ["src/stacks.ts"],
+    "out": "docs",
+    "excludeInternal": true
+}
