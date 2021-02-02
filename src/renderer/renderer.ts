@@ -1,22 +1,41 @@
 import Block from "../blocks/block.js";
 import { centerBlocks, getParentBlockElement } from "./render-utils.js";
 
+/**
+ * This is the main class that handles the rendering behind Stacks and its components. This, along with [[Block]] get function, put the blocks on the screen. 
+ */
 export default class StacksRenderer {
+    /**
+     * @internal
+     */
     private static inst:StacksRenderer = null;
 
+    /**
+     * Singleton to get the instance of the Stacks Renderer. It is important that you use this and not create a new instance of the renderer or much of the updating based on states would fail. 
+     */
     static getInstance():StacksRenderer {
         if(!StacksRenderer.inst)
             StacksRenderer.inst = new StacksRenderer();
         return StacksRenderer.inst;
     }
 
+    /**
+     * @internal
+     */
     watching: Record<string, HTMLElement> = {};
     stateful: Block[] = [];
     ids: string[] = [];
     elemcount:number = -1;
     centered: string[] = [];
 
-
+    /**
+     * This is what you will call when you want to render a block through
+     * ```javascript
+     * StacksRenderer.getInstance().render(new MyBlock());
+     * ```
+     * The renderer will then recursively get the contents of and render each block you have created.
+     * @param block The base block to render
+     */
     render(block : Block): void{
         let body:HTMLElement = block.get(true);
     
@@ -44,6 +63,11 @@ export default class StacksRenderer {
         }
     }
 
+    /**
+     * @internal
+     * This is what gets called when states change and Stacks uses a recursive updating algorithm to fix only what is needed so as to preserve user input state.
+     * @param block The base block to render
+     */
     update(block : Block) {
         // console.trace("<h2>UPDATE</h2>")
         // let count:number = 0;
@@ -105,6 +129,12 @@ export default class StacksRenderer {
         // console.log("HELLO")
     }
 
+    /**
+     * @internal
+     * recursive function to replace html elements for updating states
+     * @param New 
+     * @param Old 
+     */
     replaceElement(New:HTMLElement, Old:HTMLElement) {
         if(New.outerHTML === Old.outerHTML)
             return;
@@ -130,12 +160,22 @@ export default class StacksRenderer {
         });
     }
 
+    /**
+     * @internal
+     * @param New 
+     * @param Old 
+     * @param Parent 
+     */
     resetNodeValue(New:HTMLElement, Old:HTMLElement, Parent:HTMLElement) {
         const id = Old.id;
         New.id = id;
         Parent.replaceChild(New, Old);
     }
 
+    /**
+     * @internal
+     * @param block 
+     */
     generateId(block?:string): string {
         return (block ? block : "sjsblock") + this.elemcount++;
     }

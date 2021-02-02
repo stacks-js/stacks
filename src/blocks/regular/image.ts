@@ -7,6 +7,9 @@ import Block from "../block.js";
  * ```
  */
 export default class Image extends Block {
+    /**
+     * The path to the image
+     */
     path:string;
 
     /**
