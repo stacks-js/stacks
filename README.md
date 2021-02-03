@@ -1,1 +1,1 @@
-<img align="left" width="116" height="116" src="https://github.com/stacks-js/stacks/blob/main/.github/logo.png?raw=true" />
+<img align="center" width="116" height="116" src="https://github.com/stacks-js/stacks/blob/main/.github/logo.png?raw=true" />
