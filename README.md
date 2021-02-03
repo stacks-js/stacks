@@ -108,6 +108,8 @@ class MyBlock extends Block {
 ## Installation
 So, you want to try out Stacks for yourself? I must say, that's a good decision. All jokes aside though, adding Stacks to your own project is very easy. You can add it incrementally, even in an existing project, or start fresh(possibly with our [CLI]()).
 
+> Just as a disclaimer, as of 2/3/2021, I have not published Stacks and therefore these installation processes won't work. This is what they will eventually be though. Anyone can still use the downloaded file from the publish directory(read below for more information on that)
+
 ### CDN or File
 If you have an HTML project or don't want to worry about bundlers and whatnot(I feel your pain), feel free to either download the `stacks.min.js` from the `publish/` directory of the project or import it through the CDN:
 
