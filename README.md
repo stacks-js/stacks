@@ -4,7 +4,7 @@
 
 <br />
 
-Stacks.js is a Javascript library for building fully programmating and reactive user interfaces. You can build very robust web ui's in very short time with Stacks. Fans of Apple's [SwiftUI](https://developer.apple.com/xcode/swiftui/) will enjoy the similarity of the component based structure along with the flexibility of Javascript.
+Stacks.js is a Javascript library for building fully programmatic and reactive user interfaces. You can build very robust web ui's in very short time with Stacks. Fans of Apple's [SwiftUI](https://developer.apple.com/xcode/swiftui/) will enjoy the similarity of the component based structure along with the flexibility of Javascript.
 
 **Frontend, backend, and all in between developers rejoice when they see Stacks. Stacks allows developers to seamlessly couple the layout, styling, and business logic of web development together with one language and very little code.**
 
