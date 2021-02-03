@@ -6,6 +6,10 @@
 
 Stacks.js is a Javascript library for building fully programmating and reactive user interfaces. You can build very robust web ui's in very short time with Stacks. Fans of Apple's [SwiftUI](https://developer.apple.com/xcode/swiftui/) will enjoy the similarity of the component based structure along with the flexibility of Javascript.
 
+**Frontend, backend, and all in between developers rejoice when they see Stacks. Stacks allows developers to seamlessly couple the layout, styling, and business logic of web development together with one language and very little code.**
+
+Stacks is a declarative and component based library, similar to React. Much of this project was inspired by SwiftUI, React, and Flutter as a whole.
+
 <br />
 
 ## Overview
@@ -15,6 +19,7 @@ Stacks.js is a Javascript library for building fully programmating and reactive 
     - [Styling](#intelligent-styling-out-of-the-box)
     - [Event System](#a-comprehensive-event-system)
     - [State Management](#state-management-built-in)
+    - [Rich Component Library](#rich-component-library)
 - [Installation](#installation)
     - [CDN](#cdn-or-file)
     - [NPM](#npm)
@@ -104,6 +109,44 @@ class MyBlock extends Block {
     }
 }
 ```
+
+### Rich Component Library
+
+Like all other component-based frameworks, Stacks has a term for the UI elements onscreen. React calls them *Components*, SwiftUI calls them *Views*, Flutter calls them *Widgets*, and Stacks calls them *Blocks*. All these terms, however, mean essentially the same thing. 
+
+With Stacks, a term I like to use is *Everything is a Block*. When I say everything, I mean *everything*. The parameter of the `render` function is a block in itself. 
+
+The way interfaces are built out is by combining together so-called **System Blocks**. These are elements that the browser knows how to render, such as text, images, etc. The user's job is to define what combination of System Blocks they want, along with how they want it styled. The framework does the rest of the heavylifting in actually converting that to renderable content.
+
+Stacks, similar to SwiftUI, takes this *Everything is a Block* phrase even further. As explained in the [styling](#intelligent-styling-out-of-the-box) section, we implement the Builder Paradigm or Pattern. This means that every block modifier also returns a block and therefore are Stackable. 
+
+That being said, Stacks has a wide array of System components available, with several more to come.
+
+These include:
+ - Text
+ - Image
+ - Stack
+ - Spacer
+ - Inputs
+    - TextField
+    - NumberField
+    - DatePicker
+    - ColorPicker
+    - and more
+ - and more
+
+One of the key ones in here are **Stacks**
+
+Stacks in Stacks(I know right) work as a way to sort of bridge the gap between how things can be rendered. For example, the renderer takes in only one block as an argument, and the `body` function of a block returns a single block. How, then, are we to combine blocks together without losing the modularity that Stacks.js as a whole provides? This is where Stacks come in. Stacks are a way for you to combine several different Blocks together and to be rendered as one. This is done like this:
+
+```javascript
+new Stack("y", 
+    new Text("Hello there! I am in a YStack!"),
+    new Image("./image.png")
+);
+```
+
+Stacks take an unlimited number of arguments and the first one will be either "x", "y", or "z". XStacks are horizontally aligned, YStacks are Vertically aligned, and ZStacks put blocks on top of one another. Read more about stacks in the [documentation](https://stacks.js.org)
 
 ## Installation
 So, you want to try out Stacks for yourself? I must say, that's a good decision. All jokes aside though, adding Stacks to your own project is very easy. You can add it incrementally, even in an existing project, or start fresh(possibly with our [CLI]()).
