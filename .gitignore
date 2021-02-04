@@ -4,3 +4,4 @@ node_modules
 cli/node_modules
 cli/appName
 cli/testName
+.DS_Store
