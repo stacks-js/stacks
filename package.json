@@ -1,8 +1,8 @@
 {
-  "name": "stacks-js",
+  "name": "stacks.js",
   "version": "1.0.0",
   "description": "",
-  "main": "out/stacks.min.js",
+  "main": "dist/stacks.js",
   "directories": {
     "main": "dist"
   },
