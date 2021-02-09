@@ -1,8 +1,10 @@
 {
   "name": "stacks.js",
-  "version": "1.0.0",
+  "version": "0.0.7",
   "description": "",
   "main": "dist/stacks.js",
+  "types": "dist/stacks.d.ts",
+  "prepublish": "tsc",
   "directories": {
     "main": "dist"
   },
