@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/stacks.js",
   "types": "dist/stacks.d.ts",
+  "unpkg": "publish/stacks.min.js",
   "prepublish": "tsc",
   "directories": {
     "main": "dist"
